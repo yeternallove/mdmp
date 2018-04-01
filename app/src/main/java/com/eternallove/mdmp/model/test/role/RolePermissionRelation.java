@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.model.role;
+package com.eternallove.mdmp.model.test.role;
 
 
 /**

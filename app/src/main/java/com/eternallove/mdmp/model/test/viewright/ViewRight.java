@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.model.viewright;
+package com.eternallove.mdmp.model.test.viewright;
 
 
 /**

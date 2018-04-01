@@ -45,6 +45,34 @@ public class HttpHandler {
         return response;
     }
 
+    public String makeServiceCall(String reqUrl, String body) {
+        String response = null;
+        try {
+            URL url = new URL(reqUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //设置连接超时
+            conn.setConnectTimeout(2000);
+            //设置指定时间内服务器没有返回数据的超时
+            conn.setReadTimeout(5000);
+            //设置允许输出
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+
+            // read the response
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            response = convertStreamToString(in);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage());
+        } catch (ProtocolException e) {
+            Log.e(TAG, "ProtocolException: " + e.getMessage());
+        } catch (IOException e) {
+            Log.e(TAG, "IOException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage());
+        }
+        return response;
+    }
+
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();

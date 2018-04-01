@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,10 +24,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.LoginActivity"
+            android:theme="@style/AppThemeFullscreen"/>
+        <!--android:windowSoftInputMode="adjustPan|stateHidden"-->
+        <activity android:name=".ui.activities.Main2Activity"
+            android:theme="@style/AppThemeFullscreen"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name=".ui.activities.Main3Activity"
+            android:theme="@style/AppThemeFullscreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activities.UserActivity" />
         <activity
-            android:name=".ui.activities.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".ui.activities.Main2Activity"></activity>
+            android:name=".ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>

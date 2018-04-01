@@ -2,19 +2,27 @@ package com.eternallove.mdmp.ui.customview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
+import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.eternallove.mdmp.R;
 
 /**
  * @description: 圆形图片
@@ -23,67 +31,70 @@ import android.widget.ImageView;
  */
 @SuppressLint("AppCompatCustomView")
 public class CircleImageView extends ImageView {
-    private Paint mPaintBitmap = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mPaintBorder = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Bitmap mRawBitmap;
-    private BitmapShader mShader;
-    private Matrix mMatrix = new Matrix();
-    private float mBorderWidth = dip2px(15);
-    private int mBorderColor = 0x80bebebe;
+
+    private Paint paint = null;
+    // 设置画布抗锯齿(毛边过滤)
+    private PaintFlagsDrawFilter pfdf = null;
+    private Path path = null;
+
+    public CircleImageView(Context context) {
+        super(context);
+        init(context, null);
+    }
 
     public CircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs);
+    }
+
+    public CircleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs);
+    }
+
+    // public CircleImageView(Context context, AttributeSet attrs, int
+    // defStyleAttr, int defStyleRes) {
+    // super(context, attrs, defStyleAttr, defStyleRes);
+    // init(context, attrs);
+    // }
+
+    private void init(Context context, AttributeSet attrs) {
+        paint = new Paint();
+        // 透明度: 00%=FF（不透明） 100%=00（透明）
+        paint.setColor(Color.WHITE);
+        // paint.setColor(Color.parseColor("ffffffff"));
+        paint.setStyle(Paint.Style.STROKE);
+        // 解决图片拉伸后出现锯齿的两种办法: 1.画笔上设置抗锯齿 2.画布上设置抗锯齿
+        // http://labs.easymobi.cn/?p=3819
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        paint.setAntiAlias(true);
+        int clearBits = 0;
+        int setBits = Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG;
+        pfdf = new PaintFlagsDrawFilter(clearBits, setBits);
+        //由于imageview有默认底色,如黑色,设置背景为透明是为了第一次setImageBitmap时不显示圆以外方型的默认背景色
+        //但是这样在中兴nubia手机上还会首先显示正方形黑色背景,然后才变圆(解决办法,先裁成圆再setImageBitmap)
+        setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Bitmap rawBitmap = getBitmap(getDrawable());
-        if (rawBitmap != null) {
-            int viewWidth = getWidth();
-            int viewHeight = getHeight();
-            int viewMinSize = Math.min(viewWidth, viewHeight);
-            float dstWidth = viewMinSize;
-            float dstHeight = viewMinSize;
-            if (mShader == null || !rawBitmap.equals(mRawBitmap)) {
-                mRawBitmap = rawBitmap;
-                mShader = new BitmapShader(mRawBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            }
-            if (mShader != null) {
-                mMatrix.setScale((dstWidth - mBorderWidth * 2) / rawBitmap.getWidth(), (dstHeight - mBorderWidth * 2) / rawBitmap.getHeight());
-                mShader.setLocalMatrix(mMatrix);
-            }
-            mPaintBitmap.setShader(mShader);
-            mPaintBorder.setStyle(Paint.Style.STROKE);
-            mPaintBorder.setStrokeWidth(mBorderWidth);
-            mPaintBorder.setColor(mBorderColor);
-            float radius = viewMinSize / 2.0f;
-            canvas.drawCircle(radius, radius, radius - mBorderWidth / 2.0f, mPaintBorder);
-            canvas.translate(mBorderWidth, mBorderWidth);
-            canvas.drawCircle(radius - mBorderWidth, radius - mBorderWidth, radius - mBorderWidth, mPaintBitmap);
-        } else {
-            super.onDraw(canvas);
+        int width = getWidth();
+        int height = getHeight();
+        // CCW: CounterClockwise(逆时针)
+        // CW: Clockwise(顺时针)
+        if (path == null) {
+            path = new Path();
+            path.addCircle(width / 2f, height / 2f, Math.min(width / 2f, height / 2f), Path.Direction.CCW);
+            path.close();
         }
-    }
-
-    private Bitmap getBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        } else if (drawable instanceof ColorDrawable) {
-            Rect rect = drawable.getBounds();
-            int width = rect.right - rect.left;
-            int height = rect.bottom - rect.top;
-            int color = ((ColorDrawable) drawable).getColor();
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            canvas.drawARGB(Color.alpha(color), Color.red(color), Color.green(color), Color.blue(color));
-            return bitmap;
-        } else {
-            return null;
-        }
-    }
-
-    private int dip2px(int dipVal) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dipVal * scale + 0.5f);
+//      canvas.drawCircle(width / 2f, height / 2f, Math.min(width / 2f, height / 2f), paint);
+        // super.onDraw里面也可能有多个canvas.save
+        int saveCount = canvas.save();
+        canvas.setDrawFilter(pfdf);
+        // Region.Op.REPLACE 是显示第二次的
+//      canvas.clipPath(path, Region.Op.REPLACE);
+        canvas.clipPath(path, Region.Op.INTERSECT);
+        super.onDraw(canvas);
+        canvas.restoreToCount(saveCount);
     }
 }

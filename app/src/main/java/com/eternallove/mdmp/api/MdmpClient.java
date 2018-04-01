@@ -1,6 +1,10 @@
 package com.eternallove.mdmp.api;
 
+import android.content.Context;
+
 import com.eternallove.mdmp.BuildConfig;
+import com.eternallove.mdmp.model.test.user.UserTest;
+import com.eternallove.mdmp.util.CookieManager;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -10,9 +14,10 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -20,28 +25,31 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author: eternallove
  * @date: 2018/3/21 16:09
  */
-public class Client {
+public class MdmpClient{
     private static final String BaseUrl = "http://{localhost}:8088/mdmp/";
-    private static Client sClient;
+    private static MdmpClient sClient;
 
     private String mUserId = "";
-    private Server mService;
+    private MdmpServer mService;
 
-    public static Client getInstance() {
+    public static MdmpClient getInstance() {
         if (sClient == null) {
-            sClient = new Client();
+            synchronized (MdmpClient.class) {
+                if(sClient==null)
+                sClient = new MdmpClient();
+            }
         }
         return sClient;
     }
 
-    private Client() {
+    private MdmpClient() {
         mService = new Retrofit.Builder()
                 .baseUrl(getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(createClient())
                 .build()
-                .create(Server.class);
+                .create(MdmpServer.class);
 
     }
 
@@ -55,6 +63,7 @@ public class Client {
         }
 //        initParameter(builder);
         initTimeOut(builder);
+        builder.cookieJar(new CookieManager());
         //将这些配置设置给retrofit
         return builder.build();
     }
@@ -94,4 +103,15 @@ public class Client {
         builder.addInterceptor(parameterInterceptor);
     }
 
+    public Call<ResponseBody> getData() {
+        return mService.getData();
+    }
+
+    public Call<ResponseBody> edit(UserTest data) {
+        return mService.edit(data);
+    }
+
+    public Call<ResponseBody> getUser() {
+        return mService.getUser();
+    }
 }

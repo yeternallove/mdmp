@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
+import com.eternallove.mdmp.ui.adapters.FragmentAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -48,29 +49,23 @@ public class NotifyFragment extends BaseFragment {
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
 
         //初始化TabLayout的title
-        mTabLayout.addTab(mTabLayout.newTab().setText("通知"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("赞与感谢"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("关注"));
-
-        List<String> titles = new ArrayList<>();
-        titles.add("通知");
-        titles.add("赞与感谢");
-        titles.add("关注");
-
+        String[] titles = {"待处理", "已完成", "我提交"};
+        for (String title : titles) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(title));
+        }
         //初始化ViewPager的数据集
-//        List<Fragment> fragments = new ArrayList<>();
-//        fragments.add(new NotifyChildFragment());
-//        fragments.add(new NotifyChildFragment());
-//        fragments.add(new NotifyChildFragment());
+        List<BaseFragment> fragments = new ArrayList<>();
+        fragments.add(new NotifyChildFragment());
+        fragments.add(new NotifyChildFragment());
+        fragments.add(new NotifyChildFragment());
 
         //创建ViewPager的adapter
-//        FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
-//        mViewPager.setAdapter(adapter);
+        FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
+        mViewPager.setAdapter(adapter);
         //千万别忘了，关联TabLayout与ViewPager
         //同时也要覆写PagerAdapter的getPageTitle方法，否则Tab没有title
         mTabLayout.setupWithViewPager(mViewPager);
-//        mTabLayout.setTabsFromPagerAdapter(adapter);
-
+        mTabLayout.setTabsFromPagerAdapter(adapter);
     }
 
 

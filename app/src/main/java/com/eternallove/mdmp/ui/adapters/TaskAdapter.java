@@ -5,14 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.model.user.UserBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,11 +19,11 @@ import butterknife.ButterKnife;
 /**
  * @description: @author: eternallove @date: 2017/7/6 14:39
  */
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.UserViewHolder> {
     private Context mContext;
     private List<UserBean> mData = new ArrayList<>();
 
-    public UserAdapter(Context context, List<UserBean> data) {
+    public TaskAdapter(Context context, List<UserBean> data) {
         this.mContext = context;
         if (data != null) this.mData = data;
     }
@@ -42,7 +40,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new UserViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_user, parent, false));
+        return new UserViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_task, parent, false));
     }
 
     @Override

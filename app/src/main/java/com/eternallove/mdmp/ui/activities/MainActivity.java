@@ -4,18 +4,30 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.ui.base.BaseActivity;
+import com.eternallove.mdmp.ui.base.BaseFragment;
+import com.eternallove.mdmp.ui.fragments.HomeFragment;
 import com.eternallove.mdmp.ui.fragments.ItemFragment;
 import com.eternallove.mdmp.ui.fragments.MeFragment;
 import com.eternallove.mdmp.ui.fragments.NotifyFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
+
+    public final static String[] TAG_FRAGMENT = new String[]{"CHAT", "ACC", "SCH", "ME"};//标签
+
+    private List<BaseFragment> fragments = new ArrayList<>();
+    private BaseFragment fragmentNow;
+    private FragmentManager fm;
 
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNav;
@@ -25,39 +37,34 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        fm = getSupportFragmentManager();
 //        setOverflowShowingAlways();
 //        int mId= PreferenceManager.getDefaultSharedPreferences(this).getInt("mId",-1);
 //        if(mId == -1){
 //            LoginActivity.actionStart(this);
 //        }
-//        getFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.framelayout_main,new ContactsFragment())
-//                .commit();
+        fragments.add(new HomeFragment());
+        fragments.add(new NotifyFragment());
+        fragments.add(new MeFragment());
+        stateCheck(savedInstanceState);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 FragmentManager fm = getSupportFragmentManager();
                 switch (item.getItemId()) {
 //                    case R.id.bottom_Nav_item_1:
+//                        switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[0]);
 //                        break;
                     case R.id.bottom_Nav_item_2:
-//                        ContactsFragment confrgm =new ContactsFragment();
-//                        fm.beginTransaction()
-//                                .replace(R.id.framelayout_main,confrgm)
-//                                .commit();
-//                        break;
+//                        LoginActivity.actionStart(MainActivity.this);
+                        switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[1]);
+                        break;
                     case R.id.bottom_Nav_item_3:
-                        NotifyFragment itemFragment = new NotifyFragment();
-                        fm.beginTransaction()
-                                .replace(R.id.framelayout_main, itemFragment)
-                                .commit();
+//                        Main3Activity.actionStart(MainActivity.this);
+                        switchContent(fragmentNow,fragments.get(1),TAG_FRAGMENT[2]);
                         break;
                     case R.id.bottom_Nav_item_4:
-                        MeFragment mefrgm = new MeFragment();
-                        fm.beginTransaction()
-                                .sh(R.id.framelayout_main,mefrgm)
-                                .commit();
+                        switchContent(fragmentNow,fragments.get(2),TAG_FRAGMENT[3]);
                         break;
                     default:
                         break;
@@ -89,6 +96,49 @@ public class MainActivity extends BaseActivity {
 //                return super.onOptionsItemSelected(item);
 //        }
 //    }
+
+    /**
+     * fragment 切换
+     *
+     * @param from
+     * @param to
+     */
+    public void switchContent(BaseFragment from, BaseFragment to, String tag) {
+        if (from != to) {
+            fragmentNow = to;
+            FragmentTransaction transaction = fm.beginTransaction();
+            if (!to.isAdded()) { // 先判断是否被add过
+                transaction.hide(from).add(R.id.framelayout_main, to, tag).commit();
+            } else {
+                transaction.hide(from).show(to).commit();
+            }
+        }
+    }
+
+    /**
+     * 状态检测 用于内存不足时的时候保证fragment不会重叠
+     */
+    private void stateCheck(Bundle saveInstanceState) {
+        if (saveInstanceState == null) {
+            fragmentNow = fragments.get(0);
+            fm.beginTransaction().add(R.id.framelayout_main, fragmentNow,TAG_FRAGMENT[0]).commit();
+        } else {
+            FragmentTransaction transaction = fm.beginTransaction();
+            boolean show = true;
+            for (String tag : TAG_FRAGMENT) {
+                BaseFragment fragment = (BaseFragment) fm.findFragmentByTag(tag);
+                if (fragment != null) {
+                    if (show) {
+                        transaction.show(fragment);
+                        show = false;
+                    } else {
+                        transaction.hide(fragment);
+                    }
+                }
+            }
+            transaction.commit();
+        }
+    }
     /**
      * 出现OverflowShowing图标
      * @param featureId

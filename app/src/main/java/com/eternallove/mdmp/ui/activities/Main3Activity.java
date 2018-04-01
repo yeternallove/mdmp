@@ -1,132 +1,138 @@
-package com.ltl.myloginproject;
+package com.eternallove.mdmp.ui.activities;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.LinearLayout;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnClickListener {
+import com.eternallove.mdmp.R;
+import com.eternallove.mdmp.api.MdmpClient;
+import com.eternallove.mdmp.model.test.user.UserTest;
+import com.eternallove.mdmp.ui.base.BaseActivity;
 
-	private TextView mBtnLogin;
-	
-	private View progress;
-	
-	private View mInputLayout;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-	private float mWidth, mHeight;
+public class Main3Activity extends BaseActivity implements OnClickListener {
 
-	private LinearLayout mName, mPsw;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    @BindView(R.id.edt_acc)
+    EditText edtAccount;
+    @BindView(R.id.edt_pwd)
+    EditText edtPassword;
+    @BindView(R.id.main_btn_login)
+    TextView btnLogin;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
 
-		initView();
-	}
+    public static void actionStart(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context, Main3Activity.class);
+        context.startActivity(intent);
+    }
 
-	private void initView() {
-		mBtnLogin = (TextView) findViewById(R.id.main_btn_login);
-		progress = findViewById(R.id.layout_progress);
-		mInputLayout = findViewById(R.id.input_layout);
-		mName = (LinearLayout) findViewById(R.id.input_layout_name);
-		mPsw = (LinearLayout) findViewById(R.id.input_layout_psw);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //hide the status bar
+//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_login2);
+        ButterKnife.bind(this);
 
-		mBtnLogin.setOnClickListener(this);
-	}
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        btnLogin.setOnClickListener(this);
+//        lyLogin.setPadding(0,0,0,0);
+    }
 
-	@Override
-	public void onClick(View v) {
 
-		mWidth = mBtnLogin.getMeasuredWidth();
-		mHeight = mBtnLogin.getMeasuredHeight();
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_btn_login:
+                attemptLogin();
+                break;
+            default:
+                break;
+        }
+    }
 
-		mName.setVisibility(View.INVISIBLE);
-		mPsw.setVisibility(View.INVISIBLE);
+    /**
+     * 尝试登录
+     */
+    private void attemptLogin() {
 
-		inputAnimator(mInputLayout, mWidth, mHeight);
+        // Reset errors.
+        edtAccount.setError(null);
+        edtPassword.setError(null);
 
-	}
+        String account = edtAccount.getText().toString();
+        String password = edtPassword.getText().toString();
 
-	private void inputAnimator(final View view, float w, float h) {
+        boolean cancel = false;
+        View focusView = null;
 
-		AnimatorSet set = new AnimatorSet();
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            edtPassword.setError(getString(R.string.error_invalid_password));
+            focusView = edtPassword;
+            cancel = true;
+        }
 
-		ValueAnimator animator = ValueAnimator.ofFloat(0, w);
-		animator.addUpdateListener(new AnimatorUpdateListener() {
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(account)) {
+            edtAccount.setError(getString(R.string.error_field_required));
+            focusView = edtAccount;
+            cancel = true;
+        } else if (!isEmailValid(account)) {
+            edtAccount.setError(getString(R.string.error_invalid_email));
+            focusView = edtAccount;
+            cancel = true;
+        }
 
-			@Override
-			public void onAnimationUpdate(ValueAnimator animation) {
-				float value = (Float) animation.getAnimatedValue();
-				ViewGroup.MarginLayoutParams params = (MarginLayoutParams) view
-						.getLayoutParams();
-				params.leftMargin = (int) value;
-				params.rightMargin = (int) value;
-				view.setLayoutParams(params);
-			}
-		});
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
 
-		ObjectAnimator animator2 = ObjectAnimator.ofFloat(mInputLayout,
-				"scaleX", 1f, 0.5f);
-		set.setDuration(1000);
-		set.setInterpolator(new AccelerateDecelerateInterpolator());
-		set.playTogether(animator, animator2);
-		set.start();
-		set.addListener(new AnimatorListener() {
+            MdmpClient.getInstance().edit(new UserTest()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    System.out.println(response.headers());
+                }
 
-			@Override
-			public void onAnimationStart(Animator animation) {
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-			}
+                }
+            });
+        }
+    }
 
-			@Override
-			public void onAnimationRepeat(Animator animation) {
-				// TODO Auto-generated method stub
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+//        return email.contains("@");
+        return true;
 
-			}
+    }
 
-			@Override
-			public void onAnimationEnd(Animator animation) {
-
-				progress.setVisibility(View.VISIBLE);
-				progressAnimator(progress);
-				mInputLayout.setVisibility(View.INVISIBLE);
-
-			}
-
-			@Override
-			public void onAnimationCancel(Animator animation) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-	}
-
-	private void progressAnimator(final View view) {
-		PropertyValuesHolder animator = PropertyValuesHolder.ofFloat("scaleX",
-				0.5f, 1f);
-		PropertyValuesHolder animator2 = PropertyValuesHolder.ofFloat("scaleY",
-				0.5f, 1f);
-		ObjectAnimator animator3 = ObjectAnimator.ofPropertyValuesHolder(view,
-				animator, animator2);
-		animator3.setDuration(1000);
-		animator3.setInterpolator(new JellyInterpolator());
-		animator3.start();
-
-	}
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 0;
+    }
 }

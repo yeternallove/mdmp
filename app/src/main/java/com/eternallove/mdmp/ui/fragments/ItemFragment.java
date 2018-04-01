@@ -2,7 +2,6 @@ package com.eternallove.mdmp.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.model.DummyContent;
-import com.eternallove.mdmp.model.DummyContent.DummyItem;
+import com.eternallove.mdmp.model.test.DummyContent;
+import com.eternallove.mdmp.model.test.DummyContent.DummyItem;
 import com.eternallove.mdmp.ui.adapters.MyItemRecyclerViewAdapter;
+import com.eternallove.mdmp.ui.base.BaseFragment;
 
 /**
  * A fragment representing a list of Items.
@@ -21,7 +21,7 @@ import com.eternallove.mdmp.ui.adapters.MyItemRecyclerViewAdapter;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment {
+public class ItemFragment extends BaseFragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -59,7 +59,6 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -106,4 +105,5 @@ public class ItemFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
     }
+
 }

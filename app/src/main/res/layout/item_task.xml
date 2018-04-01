@@ -1,6 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e0e0e0"
+    >
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="216dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/textView"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@drawable/ic_test_lingxing" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@drawable/ic_test_lingxing" />
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/ic_test_lingxing"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_test_renwu" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView4"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/imageView4"
+            android:text="尺寸管理"
+            android:textColor="#212121"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="15dp"
+            android:text="2018-3-29 接收任务时间" />
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView5"
+            android:layout_below="@+id/textView5"
+            android:layout_marginTop="12dp"
+            android:text="待处理环节" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView"
+            android:layout_below="@+id/textView2"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="15dp"
+            android:text="2018-3-29 上一环节结束时间" />
+
+        <RelativeLayout
+            android:layout_below="@id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/textView7"
+                android:layout_marginStart="35dp"
+                android:background="@drawable/ic_test_lv"
+                android:id="@+id/imageView3" />
+
+
+            <TextView
+                android:id="@+id/tv_mdmname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imageView3"
+                android:layout_marginStart="11dp"
+                android:layout_toEndOf="@+id/imageView3"
+                android:text="主数据名称"
+                android:textColor="#212121"
+                android:textSize="16sp" />
+
+            <Button
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignBottom="@+id/textView7"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/ic_test_look" />
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginStart="14dp"-->
+    <!--android:layout_marginTop="21dp"-->
+    <!--android:text="工作流名称" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView2"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignEnd="@+id/textView7"-->
+    <!--android:layout_below="@+id/textView8"-->
+    <!--android:layout_marginTop="80dp"-->
+    <!--android:text="上个环节完成时间" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView5"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignTop="@+id/textView"-->
+    <!--android:layout_marginStart="22dp"-->
+    <!--android:layout_toEndOf="@+id/textView"-->
+    <!--android:text="操作类型" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView6"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignTop="@+id/textView5"-->
+    <!--android:layout_marginStart="47dp"-->
+    <!--android:layout_toEndOf="@+id/textView5"-->
+    <!--android:text="待处理环节" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView7"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignStart="@+id/textView5"-->
+    <!--android:text="主数据" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView8"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignStart="@+id/textView6"-->
+    <!--android:layout_below="@+id/textView6"-->
+    <!--android:layout_marginStart="44dp"-->
+    <!--android:text="起始时间" />-->
+
+
+
+    <!--<ImageView-->
+    <!--android:id="@+id/imageView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/textView8"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:layout_marginTop="157dp"-->
+    <!--android:layout_toEndOf="@+id/textView6"-->
+    <!--app:srcCompat="@drawable/ic_more" />-->
+</RelativeLayout>

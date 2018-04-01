@@ -1,10 +1,9 @@
-package cn.edu.zucc.eternallove.uielf.ui.fragments;
+package com.eternallove.mdmp.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,23 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.clans.fab.FloatingActionButton;
+
+import com.eternallove.mdmp.R;
+import com.eternallove.mdmp.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.edu.zucc.eternallove.uielf.R;
-import cn.edu.zucc.eternallove.uielf.ui.adapters.SubRecyclerViewAdapter;
 
 
-public class NotifyChildFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NotifyChildFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     private Context mContext;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private SubRecyclerViewAdapter adapter;
+//    private SubRecyclerViewAdapter adapter;
     //
     private View rootView;
-    private FloatingActionButton fab;
+//    private FloatingActionButton fab;
 
     @Override
     public void onAttach(Context context) {
@@ -44,7 +43,7 @@ public class NotifyChildFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     private void InitView() {
-        fab = (FloatingActionButton) rootView.findViewById(R.id.sub_fab);
+//        fab = (FloatingActionButton) rootView.findViewById(R.id.sub_fab);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) (mContext.getResources().getDisplayMetrics().density * 64));
@@ -56,17 +55,17 @@ public class NotifyChildFragment extends Fragment implements SwipeRefreshLayout.
         for (int i = 0; i < 100; i++) {
             datas.add("This is item " + i);
         }
-        adapter = new SubRecyclerViewAdapter(mContext, datas);
-        recyclerView.setAdapter(adapter);
+//        adapter = new SubRecyclerViewAdapter(mContext, datas);
+//        mRecyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (Math.abs(dy) > 5) {
                     if (dy > 0) {
-                        fab.hide(true);
+//                        fab.hide(true);
                     } else {
-                        fab.show(true);
+//                        fab.show(true);
                     }
                 }
             }

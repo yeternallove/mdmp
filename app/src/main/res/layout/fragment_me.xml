@@ -19,7 +19,8 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:title="个人中心">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 app:layout_collapseMode="parallax">
 
                 <com.eternallove.mdmp.ui.customview.CircleImageView
-                    android:id="@+id/headview"
+                    android:id="@+id/item_user_headview"
                     android:layout_width="68dp"
                     android:layout_height="68dp"
                     android:layout_centerInParent="true"
@@ -52,42 +53,110 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/menubackground"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="10dp">
 
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitStart"
-                android:src="@drawable/ic_me_test" />
-
-            <Switch
-                android:id="@+id/swt_me_night"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="23dp"
-                android:layout_marginTop="197dp" />
+                android:background="@color/cardBackground">
 
+                <ImageView
+                    android:id="@+id/img_user"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/default_margin_center"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@color/blue" />
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/img_user"
+                    android:text="用户管理"
+                    android:textSize="@dimen/headings" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_wide"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/view_margin"
+                    android:layout_marginTop="@dimen/view_margin"
+                    android:layout_toEndOf="@+id/img_user"
+                    android:background="@color/divider" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/cardBackground">
+
+                <ImageView
+                    android:id="@+id/img_user2"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/default_margin_center"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@color/blue" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/img_user2"
+                    android:text="待定管理"
+                    android:textSize="@dimen/headings" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_wide"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/view_margin"
+                    android:layout_marginTop="@dimen/view_margin"
+                    android:layout_toEndOf="@+id/img_user2"
+                    android:background="@color/divider" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@color/cardBackground">
+
+                <ImageView
+                    android:id="@+id/omg_setting"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_margin="@dimen/default_margin_center"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@color/blue" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/omg_setting"
+                    android:text="设置"
+                    android:textSize="@dimen/headings" />
+            </RelativeLayout>
+
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_fab_edit"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end" />

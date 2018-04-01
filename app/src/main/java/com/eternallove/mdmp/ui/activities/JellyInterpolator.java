@@ -1,4 +1,4 @@
-package com.ltl.myloginproject;
+package com.eternallove.mdmp.ui.activities;
 
 import android.view.animation.LinearInterpolator;
 

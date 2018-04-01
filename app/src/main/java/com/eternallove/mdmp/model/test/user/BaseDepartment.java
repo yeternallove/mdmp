@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.eternallove.mdmp.model.user;
+package com.eternallove.mdmp.model.test.user;
 
 import java.io.Serializable;
 

@@ -1,7 +1,5 @@
 package com.eternallove.mdmp.util;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,23 +12,23 @@ import okhttp3.HttpUrl;
  * @author: eternallove
  * @date: 2018/3/22 16:27
  */
-public class cookie implements CookieJar {
+public class CookieManager implements CookieJar {
 
-    private static List<Cookie> cookies;
+    private static List<Cookie> mCookies;
 
 
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
         if(url.encodedPath().contains("login")){
-            cookie.cookies = cookies;
+            CookieManager.mCookies = cookies;
         }
     }
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
-        if (cookies == null||url.encodedPath().contains("login")) {
+        if (mCookies == null||url.encodedPath().contains("login")) {
             return new ArrayList<>();
         }
-        return cookies;
+        return mCookies;
     }
 }

@@ -7,7 +7,7 @@
  * 最近修改者：hzmc
  * 最近修改日期：2017年2月15日
  */
-package com.eternallove.mdmp.model.viewright;
+package com.eternallove.mdmp.model.test.viewright;
 
 
 /**

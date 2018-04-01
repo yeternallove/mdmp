@@ -7,7 +7,7 @@
  * 最近修改者：hzmc
  * 最近修改日期：2017年2月14日
  */
-package com.eternallove.mdmp.model.user;
+package com.eternallove.mdmp.model.test.user;
 
 /**
  * 查询用

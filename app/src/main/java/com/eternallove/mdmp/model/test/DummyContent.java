@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.model;
+package com.eternallove.mdmp.model.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;

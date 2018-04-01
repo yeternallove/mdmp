@@ -3,9 +3,15 @@ package com.eternallove.mdmp.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -23,16 +29,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.eternallove.mdmp.R;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.eternallove.mdmp.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -46,28 +54,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+//    public  static UserBean user = null;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "31401317@stu.zucc.edu.cn:123456", "yeternallove@163.com:123456"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    public static void actionStart(Context context){
+        Intent intent=new Intent();
+        intent.setClass(context,LoginActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -76,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if ( id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -88,14 +103,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mEmail = mEmailView.getText().toString();
+                String mPassword = mPasswordView.getText().toString();
+                for (String credential : DUMMY_CREDENTIALS) {
+                    String[] pieces = credential.split(":");
+                    if (pieces[0].equals(mEmail)&&pieces[1].equals(mPassword)) {
+                        editor = pref.edit();
+//                        if(rememberpass.isChecked()){
+//                            editor.putBoolean("remember_Password",true);
+//                            editor.putString("mEmail",mEmail);
+//                            editor.putString("mPassword",mPassword);
+//                            editor.putInt("mId",0);
+//                        }
+//                        else{
+//                            editor.clear();
+//                        }
+                        editor.commit();
+                    }
+                }
                 attemptLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+//        mProgressView = findViewById(R.id.login_progress);
     }
-
+    //自动完成填充
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -103,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getLoaderManager().initLoader(0, null, this);
     }
-
+    //可以请求联系人
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -128,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * Callback received when a permissions request has been completed.
+     * 请求权限的结果
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -144,6 +178,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
+     * 尝试登录
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
@@ -204,12 +239,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * Shows the progress UI and hides the login form.
+     * 显示进度隐藏登录表单
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
+        ActionBar actionBar = getSupportActionBar();
+        if(show){
+            actionBar.hide();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            // 隐藏软键盘
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        } else{
+            actionBar.show();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -326,7 +371,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
