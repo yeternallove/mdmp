@@ -14,33 +14,34 @@ public class UserBean {
     public static final int NOTENABLE = 0;
 
     // 用户id
-    private Integer					id;
+    private Integer id;
     // 账户（唯一）
-    private String				account;
+    private String account;
     // 电话
-    private String				phone;
+    private String phone;
     // 是否启用状态，启用为true
-    private Integer				enable;
+    private Integer enable;
     // 创建时间
     private Date createTime;
     // 名称(可重复)
-    private String				username;
+    private String username;
     // 密码
-    private String				password;
+    private String password;
     // 部门id
-    private Integer				departmentId;
+    private Integer departmentId;
     // 角色id
-    private Integer				roleId;
+    private Integer roleId;
     // 逻辑删除状态
-    private Integer				status;
+    private Integer status;
 
     public UserBean() {
     }
 
-    public UserBean(String account, String phone, String username) {
+    public UserBean(String account, String phone, String username, Integer enable) {
         this.account = account;
         this.phone = phone;
         this.username = username;
+        this.enable = enable;
     }
 
     public Integer getId() {

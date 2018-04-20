@@ -4,24 +4,30 @@
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorPrimary">#2196F3</color>
     <color name="colorAccent">#03A9F4</color>
+    <color name="primary_light">#BBDEFB</color>
 
-    <color name="searchmenu">#4BA1EE</color>
     <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+
+    <color name="pressed_state">#dddddd</color>
 
     <color name="shadow">#4fa3a3a3</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#EDEFF2</color>
     <color name="transparent">#00000000</color>
     <color name="blue">#1e2894</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#00CA0D</color>
 
     <color name="editViewUnderline">#EEEEEE</color>
     <color name="cardBackground">#ffffff</color>
     <color name="menubackground">#F2F4F7</color>
     <color name="divider">#E6E6E6</color>
     <color name="listbackground">#EDEFF2</color>
+    <color name="btnbackground">#D82196F3</color>
+    <color name="textcolor">#12b7f5</color>
 
-    <color name="primary_light">#BBDEFB</color>
-    <color name="secondary_text">#757575</color>
+    <color name="searchmenu">#4BA1EE</color>
     <color name="colorImagePlaceHolder">#EEEEEE</color>
     <color name="btn_gray_normal">#c0c0c0</color>
 

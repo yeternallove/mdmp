@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.ui.fragments;
+package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 import android.content.Context;
 import android.os.Bundle;

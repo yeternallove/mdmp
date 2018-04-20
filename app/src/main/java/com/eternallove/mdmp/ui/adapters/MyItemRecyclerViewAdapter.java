@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.ui.fragments.ItemFragment.OnListFragmentInteractionListener;
+import com.eternallove.mdmp.ui.fragments.MainFragments.ItemFragment.OnListFragmentInteractionListener;
 import com.eternallove.mdmp.model.test.DummyContent.DummyItem;
 
 import java.util.List;

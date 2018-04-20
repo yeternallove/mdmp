@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.ui.fragments;
+package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,15 +29,15 @@ public class HomeFragment extends BaseFragment {
     Banner banner;
     //设置图片资源:url或本地资源
     Integer[] images = new Integer[]{
-            R.drawable.ic_login_bg,
             R.drawable.ic_banner_1,
             R.drawable.ic_banner_2,
             R.drawable.ic_banner_3,
             R.drawable.ic_banner_4
+
     };
 
     //设置图片标题:自动对应
-    String[] titles = new String[]{"1","二","3","四","5"};
+    String[] titles = new String[]{"数据安全","容灾备份","大数据","IT维保服务"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment {
         //2. Banner.NUM_INDICATOR   显示数字指示器
         //3. Banner.NUM_INDICATOR_TITLE 显示数字指示器和标题
         //4. Banner.CIRCLE_INDICATOR_TITLE  显示圆形指示器和标题
-        banner.setBannerStyle(Banner.CIRCLE_INDICATOR_TITLE);
+        banner.setBannerStyle(Banner.NUM_INDICATOR_TITLE);
 
         //设置轮播样式（没有标题默认为右边,有标题时默认左边）
         //可选样式:
@@ -79,15 +79,30 @@ public class HomeFragment extends BaseFragment {
         banner.setImages(images, new Banner.OnLoadImageListener() {
             @Override
             public void OnLoadImage(ImageView view, Object url) {
-                Glide.with(getActivity()).load(url).into(view);
+                Glide.with(getActivity())
+                        .load(url)
+                        .into(view);
             }
         });
         //设置点击事件，下标是从1开始
         banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(View view, int position) {
-                Toast.makeText(getActivity(), "你点击了：" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "你点击了：" + titles[position-1], Toast.LENGTH_SHORT).show();
             }
         });
     }
+    //如果你需要考虑更好的体验，可以这么操作
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        banner.isAutoPlay(true);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        banner.isAutoPlay(false);
+//    }
 }

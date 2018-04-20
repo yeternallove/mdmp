@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @author: eternallove
  * @date: 2016/11/11
  */
-public class MyWeChatOpenHelper extends SQLiteOpenHelper {
+public class MyMdmpOpenHelper extends SQLiteOpenHelper {
     /**
      *个人信息
      * Json(data)
@@ -61,7 +61,7 @@ public class MyWeChatOpenHelper extends SQLiteOpenHelper {
             + "contact_id text,"
             + "name text,"
             + "avatar text)";
-    public MyWeChatOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public MyMdmpOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

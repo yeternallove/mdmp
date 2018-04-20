@@ -63,9 +63,10 @@
             android:paddingTop="10dp">
 
             <RelativeLayout
+                android:id="@+id/me_fragment_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cardBackground">
+                android:background="@drawable/selector_card_color">
 
                 <ImageView
                     android:id="@+id/img_user"
@@ -73,7 +74,7 @@
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/default_margin_center"
                     android:padding="@dimen/icon_padding"
-                    android:src="@color/blue" />
+                    android:src="@drawable/ic_user_management" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/default_margin_center"
                     android:padding="@dimen/icon_padding"
-                    android:src="@color/blue" />
+                    android:src="@drawable/ic_test_me" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -125,10 +126,11 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/me_fragment_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
-                android:background="@color/cardBackground">
+                android:background="@drawable/selector_card_color">
 
                 <ImageView
                     android:id="@+id/omg_setting"
@@ -136,7 +138,7 @@
                     android:layout_height="@dimen/icon_size"
                     android:layout_margin="@dimen/default_margin_center"
                     android:padding="@dimen/icon_padding"
-                    android:src="@color/blue" />
+                    android:src="@drawable/ic_setting" />
 
                 <TextView
                     android:layout_width="match_parent"

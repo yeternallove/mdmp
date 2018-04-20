@@ -14,9 +14,9 @@ import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.model.test.DummyContent;
 import com.eternallove.mdmp.ui.adapters.FragmentAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
-import com.eternallove.mdmp.ui.fragments.ItemFragment;
-import com.eternallove.mdmp.ui.fragments.NotifyChildFragment;
-import com.eternallove.mdmp.ui.fragments.UserFragment;
+import com.eternallove.mdmp.ui.fragments.MainFragments.ItemFragment;
+import com.eternallove.mdmp.ui.fragments.UserFragments.UserAttributeFragment;
+import com.eternallove.mdmp.ui.fragments.UserFragments.UserFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +65,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         //初始化ViewPager的数据集
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new UserFragment());
-        fragments.add(new NotifyChildFragment());
-        fragments.add(new NotifyChildFragment());
+        fragments.add(new UserAttributeFragment());
+        fragments.add(new UserAttributeFragment());
         fragments.add(new ItemFragment());
 
         //创建ViewPager的adapter

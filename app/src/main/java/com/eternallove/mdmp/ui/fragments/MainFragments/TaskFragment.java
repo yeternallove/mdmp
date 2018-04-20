@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.ui.fragments;
+package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.ui.adapters.FragmentAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
+import com.eternallove.mdmp.ui.fragments.TaskFragments.TaskChildren1Fragment;
+import com.eternallove.mdmp.ui.fragments.TaskFragments.TaskChildren2Fragment;
+import com.eternallove.mdmp.ui.fragments.TaskFragments.TaskChildren3Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.List;
  * @date: 2017/6/12 22:08
  */
 
-public class NotifyFragment extends BaseFragment {
+public class TaskFragment extends BaseFragment {
     private View rootView;
     private Context mContext;
     private TabLayout mTabLayout;
@@ -55,9 +58,9 @@ public class NotifyFragment extends BaseFragment {
         }
         //初始化ViewPager的数据集
         List<BaseFragment> fragments = new ArrayList<>();
-        fragments.add(new NotifyChildFragment());
-        fragments.add(new NotifyChildFragment());
-        fragments.add(new NotifyChildFragment());
+        fragments.add(new TaskChildren1Fragment());
+        fragments.add(new TaskChildren2Fragment());
+        fragments.add(new TaskChildren3Fragment());
 
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);

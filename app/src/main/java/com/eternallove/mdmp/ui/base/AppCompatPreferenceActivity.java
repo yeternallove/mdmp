@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.ui.activities;
+package com.eternallove.mdmp.ui.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

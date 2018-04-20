@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * @description:
@@ -19,11 +20,17 @@ public interface MdmpServer {
     @GET("department")
     Call<ResponseBody> getData();
 
-//    @FormUrlEncoded
+    //    @FormUrlEncoded
     @POST("account/login")
-    Call<ResponseBody> edit(@Body UserTest data);
+    Call<ResponseBody> login(@Body UserTest data);
 
     @GET("user")
     Call<ResponseBody> getUser();
+
+    @GET("task")
+    Call<ResponseBody> get(@Query("type") String type,
+                               @Query("currentPage") int currentPage,
+                               @Query("pageSize") int pageSize
+    );
 
 }

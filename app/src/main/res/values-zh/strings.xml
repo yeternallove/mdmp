@@ -1,5 +1,40 @@
 <resources>
-    <!--<string name="app_name">主数据管理</string>-->
+    <string name="app_name">主数据管理</string>
+    <!--main-->
+
+    <!--login activity-->
+    <string name="login_login">登录</string>
+    <string name="login_hint_account">账号</string>
+    <string name="login_hint_password">密码</string>
+    <string name="login_server">选择服务器</string>
+    mUseruser activity-->
+    <string name="user_mgmt_title">用户管理</string>
+    <string name="user_mgmt_user">用户列表</string>
+    <string name="user_mgmt_role">权限列表</string>
+    <string name="user_mgmt_view">视图权限</string>
+    <string name="user_mgmt_dept">部门列表</string>
+    <string name="action_like">赞</string>
+    <string name="action_comment">评论</string>
+    loginedit activity-->
+    <string name="server_server">服务器地址</string>
+    <string name="server_port">端口号</string>
+    <!--other-->
+    <string name="edit_title">更改</string>
+    <string name="edit_save">保存</string>
+    <string name="detailed_activity_title">详情</string>
+    <string name="settings_activity_title">设置</string>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
@@ -8,13 +43,10 @@
     <string name="months_ago">{count} 月前</string>
     <string name="years_ago">{count} 年前</string>
     <string name="comment_reply"> 回复</string>
-    <string name="action_like">赞</string>
-    <string name="action_comment">评论</string>
-
     <string name="bottom_Nav_item_1">微信</string>
-    <string name="bottom_Nav_item_2">通讯录</string>
-    <string name="bottom_Nav_item_3">发现</string>
-    <string name="bottom_Nav_item_4">我</string>
+    <string name="bottom_Nav_item_2">首页</string>
+    <string name="bottom_Nav_item_3">任务</string>
+    <string name="bottom_Nav_item_4">我的</string>
 
     <string name="btn_moments_text">朋友圈</string>
     <string name="action_sign_in">登录或注册</string>

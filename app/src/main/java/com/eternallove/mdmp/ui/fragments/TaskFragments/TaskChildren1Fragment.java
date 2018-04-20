@@ -1,8 +1,7 @@
-package com.eternallove.mdmp.ui.fragments;
+package com.eternallove.mdmp.ui.fragments.TaskFragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +12,9 @@ import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
-import com.eternallove.mdmp.model.test.user.UserTest;
+import com.eternallove.mdmp.model.task.Taskdefined;
 import com.eternallove.mdmp.model.user.UserBean;
-import com.eternallove.mdmp.ui.adapters.UserAdapter;
+import com.eternallove.mdmp.ui.adapters.TaskAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
 
 import org.json.JSONArray;
@@ -25,8 +24,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,13 +35,13 @@ import retrofit2.Response;
 /**
  * @description:
  * @author: eternallove
- * @date: 2018/3/20 16:19
+ * @date: 2018/4/2 19:42
  */
-public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private Context mContext;
-    private UserAdapter adapter;
-    private List<UserBean> mData;
+    private TaskAdapter adapter;
+    private List<Taskdefined> mData;
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -60,7 +57,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user, null);
+        View view = inflater.inflate(R.layout.fragment_list, null);
         ButterKnife.bind(this, view);
         //swipeRefreshLayout
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -69,10 +66,15 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         //mRecyclerView
         mData = new ArrayList<>();
         //TODO 测试数据
-        mData.add(new UserBean("acc","123","hahaha"));
-        mData.add(new UserBean("asd","456","hehehe"));
-        mData.add(new UserBean("asd","456","hehehe"));
-        adapter = new UserAdapter(getActivity(), mData);
+        mData.add(new Taskdefined());
+        mData.add(new Taskdefined());
+        mData.add(new Taskdefined());
+        mData.add(new Taskdefined());
+        mData.add(new Taskdefined());
+        mData.add(new Taskdefined());
+
+
+        adapter = new TaskAdapter(getActivity(), mData);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -91,17 +93,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //                }
 //            }
 //        });
-        MdmpClient.getInstance().edit(new UserTest()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println(response.headers());
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
         return view;
     }
 
@@ -118,15 +110,15 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     mData.clear();
                     try {
                         JSONArray jsonArray = new JSONArray(body.string());
-                        for(int i=0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject user = jsonArray.getJSONObject(i);
                             UserBean userBean = new UserBean();
                             userBean.setUsername(user.getString("username"));
                             userBean.setAccount(user.getString("account"));
                             userBean.setPhone(user.getString("createTime"));
-                            mData.add(userBean);
+//                            mData.add(userBean);
                         }
-                        adapter.updateData(mData);
+//                        adapter.updateData(mData);
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
@@ -146,6 +138,6 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //        }, 2000);
 
     }
-
-
 }
+
+

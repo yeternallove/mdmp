@@ -1,5 +1,7 @@
 package com.eternallove.mdmp.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +12,9 @@ import android.view.MenuItem;
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.ui.base.BaseFragment;
-import com.eternallove.mdmp.ui.fragments.HomeFragment;
-import com.eternallove.mdmp.ui.fragments.ItemFragment;
-import com.eternallove.mdmp.ui.fragments.MeFragment;
-import com.eternallove.mdmp.ui.fragments.NotifyFragment;
+import com.eternallove.mdmp.ui.fragments.MainFragments.HomeFragment;
+import com.eternallove.mdmp.ui.fragments.MainFragments.MeFragment;
+import com.eternallove.mdmp.ui.fragments.MainFragments.TaskFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,11 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomNavigationView)
     BottomNavigationView mBottomNav;
 
+    public static void actionStart(Context context) {
+        Intent intent = new Intent();
+        intent.setClass(context, MainActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +47,10 @@ public class MainActivity extends BaseActivity {
 //        setOverflowShowingAlways();
 //        int mId= PreferenceManager.getDefaultSharedPreferences(this).getInt("mId",-1);
 //        if(mId == -1){
-//            LoginActivity.actionStart(this);
+//            Login2Activity.actionStart(this);
 //        }
         fragments.add(new HomeFragment());
-        fragments.add(new NotifyFragment());
+        fragments.add(new TaskFragment());
         fragments.add(new MeFragment());
         stateCheck(savedInstanceState);
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,11 +62,11 @@ public class MainActivity extends BaseActivity {
 //                        switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[0]);
 //                        break;
                     case R.id.bottom_Nav_item_2:
-//                        LoginActivity.actionStart(MainActivity.this);
+//                        Login2Activity.actionStart(MainActivity.this);
                         switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[1]);
                         break;
                     case R.id.bottom_Nav_item_3:
-//                        Main3Activity.actionStart(MainActivity.this);
+//                        LoginActivity.actionStart(MainActivity.this);
                         switchContent(fragmentNow,fragments.get(1),TAG_FRAGMENT[2]);
                         break;
                     case R.id.bottom_Nav_item_4:

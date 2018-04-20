@@ -27,7 +27,7 @@
 //    private SQLiteDatabase db;
 //    private Context mcontext;
 //    private MyWeChatDB(Context context){
-//        MyWeChatOpenHelper dbHelper = new MyWeChatOpenHelper(context,DB_NAME,null,VERSION);
+//        MyMdmpOpenHelper dbHelper = new MyMdmpOpenHelper(context,DB_NAME,null,VERSION);
 //        db = dbHelper.getWritableDatabase();
 //        this.mcontext = context;
 //    }

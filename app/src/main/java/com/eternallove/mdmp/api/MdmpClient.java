@@ -1,9 +1,8 @@
 package com.eternallove.mdmp.api;
 
-import android.content.Context;
-
 import com.eternallove.mdmp.BuildConfig;
 import com.eternallove.mdmp.model.test.user.UserTest;
+import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.CookieManager;
 
 import java.io.IOException;
@@ -26,7 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @date: 2018/3/21 16:09
  */
 public class MdmpClient{
-    private static final String BaseUrl = "http://{localhost}:8088/mdmp/";
     private static MdmpClient sClient;
 
     private String mUserId = "";
@@ -70,7 +68,7 @@ public class MdmpClient{
 
     //获取服务器地址
     private String getBaseUrl() {
-        return BaseUrl.replace("{localhost}", "106.14.201.240");
+        return AppManager.getInstance().getBaseUrl();
     }
 
     //设置超时和重连
@@ -107,8 +105,8 @@ public class MdmpClient{
         return mService.getData();
     }
 
-    public Call<ResponseBody> edit(UserTest data) {
-        return mService.edit(data);
+    public Call<ResponseBody> login(UserTest data) {
+        return mService.login(data);
     }
 
     public Call<ResponseBody> getUser() {

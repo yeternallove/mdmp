@@ -1,7 +1,9 @@
 package com.eternallove.mdmp.ui.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,9 @@ import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.model.user.UserBean;
+import com.eternallove.mdmp.ui.activities.UserSettiongActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,6 +53,28 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.mTvNickName.setText(userBean.getUsername());
         holder.mTvAccount.setText(userBean.getAccount());
         holder.mTvOther.setText(userBean.getPhone());
+        holder.imgMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(mContext,view);
+                popupMenu.getMenuInflater()
+                        .inflate(R.menu.menu_comment,popupMenu.getMenu());
+                popupMenu.setGravity(Gravity.START);
+                popupMenu.show();
+            }
+        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserSettiongActivity.actionStart(mContext);
+            }
+        });
+        if(userBean.getEnable() == 0 ){
+            holder.imgNot.setVisibility(View.VISIBLE);
+        }else{
+            holder.imgNot.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +84,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         TextView mTvAccount;
         @BindView(R.id.item_user_tv_other)
         TextView mTvOther;
+        @BindView(R.id.item_user_more)
+        ImageView imgMore;
+        @BindView(R.id.item_user_img_not)
+        ImageView imgNot;
+        @BindView(R.id.cardView)
+        View cardView;
 
         public UserViewHolder(View itemView) {
             super(itemView);

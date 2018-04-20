@@ -1,23 +1,44 @@
 <resources>
     <string name="app_name">MDMP</string>
-    <!--user activity-->
-    <string name="user_mgmt_title">User Management</string>
-    <string name="user_mgmt_user">Users</string>
-    <string name="user_mgmt_role">Role</string>
-    <string name="user_mgmt_view">View permissions</string>
-    <string name="user_mgmt_dept">Department</string>
+    <!--main-->
 
     <!--login activity-->
     <string name="login_login">Sign in</string>
     <string name="login_hint_account">Account</string>
     <string name="login_hint_password">Password</string>
-
+    <string name="login_server">Select server</string>
+    mUseruser activity-->
+    <string name="user_mgmt_title">User Management</string>
+    <string name="user_mgmt_user">Users</string>
+    <string name="user_mgmt_role">Role</string>
+    <string name="user_mgmt_view">View permissions</string>
+    <string name="user_mgmt_dept">Department</string>
+    <string name="action_like">Like</string>
+    <string name="action_comment">Comment</string>
+    <!--server activity-->
+    <string name="server_server">IP</string>
+    <string name="server_port">Port</string>
+    <string name="server_server_value">106.14.201.240</string>
+    <string name="server_port_value">8088</string>
     <!--other-->
+    <string name="edit_title">Edit</string>
+    <string name="edit_save">Save</string>
+    <string name="detailed_activity_title">详情</string>
+    <string name="settings_activity_title">Settings</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="btn_moments_text">Moments</string>
-
-    <!--main-->
-
-
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="minutes_ago">{count} minutes ago</string>
@@ -28,8 +49,7 @@
     <string name="years_ago">{count} years ago</string>
     <string name="comment_reply">\@</string>
     <string name="comment_me">me</string>
-    <string name="action_like">Like</string>
-    <string name="action_comment">Comment</string>
+
 
     <string name="checkBox_remember_pass">remember pass</string>
     <string name="bottom_Nav_item_1">Chats</string>
@@ -50,7 +70,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
 
@@ -123,4 +142,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_login2">Sign in</string>
 </resources>

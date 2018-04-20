@@ -1,4 +1,4 @@
-package com.eternallove.mdmp.ui.fragments;
+package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 
 import android.content.Context;
@@ -9,12 +9,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.ui.activities.LoginActivity;
+import com.eternallove.mdmp.ui.activities.MeSettingActivity;
+import com.eternallove.mdmp.ui.activities.SettingsActivity;
 import com.eternallove.mdmp.ui.activities.UserActivity;
 import com.eternallove.mdmp.ui.base.BaseFragment;
 import com.eternallove.mdmp.ui.customview.CircleImageView;
@@ -28,12 +27,18 @@ import butterknife.ButterKnife;
  * @date: 2017/6/12 22:08
  */
 
-public class MeFragment extends BaseFragment implements View.OnClickListener{
+public class MeFragment extends BaseFragment implements View.OnClickListener {
     private View rootView;
     private Context mContext;
     private CollapsingToolbarLayout collapsing_toolbar;
     @BindView(R.id.btn)
     FloatingActionButton fab;
+    @BindView(R.id.me_fragment_user)
+    View viewUser;
+    @BindView(R.id.me_fragment_setting)
+    View viewSetting;
+    @BindView(R.id.item_user_headview)
+    CircleImageView circleImageView;
 
     @Nullable
     @Override
@@ -59,22 +64,32 @@ public class MeFragment extends BaseFragment implements View.OnClickListener{
 //            public void onClick(View view) {
 //                Toast.makeText(getActivity(),"还没设置呢", Toast.LENGTH_SHORT).show();
 //                swt.setChecked(false);
-//                LoginActivity.actionStart(getActivity());
+//                Login2Activity.actionStart(getActivity());
 //            }
 //        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserActivity.actionStart(getActivity());
+                MeSettingActivity.actionStart(getActivity());
             }
         });
-        CircleImageView view = (CircleImageView) rootView.findViewById(R.id.item_user_headview);
-        Glide.with(mContext).load(R.drawable.ic_home_profile).into(view);
+//        Glide.with(mContext).load(R.drawable.ic_home_profile).into(circleImageView);
+        viewUser.setOnClickListener(this);
+        viewSetting.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.me_fragment_user:
+                UserActivity.actionStart(getActivity());
+                break;
+            case R.id.me_fragment_setting:
+                SettingsActivity.actionStart(getActivity());
+                break;
+            default:
+                break;
+        }
     }
 }
