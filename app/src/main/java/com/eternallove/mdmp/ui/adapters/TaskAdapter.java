@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.model.task.Taskdefined;
+import com.eternallove.mdmp.model.interfaces.TaskInterface;
+import com.eternallove.mdmp.model.interfaces.UserAttribute;
 import com.eternallove.mdmp.ui.activities.DetailedActivity;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +25,32 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * @description: @author: eternallove @date: 2017/7/6 14:39
+ * @description:
+ * @author: eternallove
+ * @date: 2017/7/6 14:39
  */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.UserViewHolder> {
     private Context mContext;
-    private List<Taskdefined> mData = new ArrayList<>();
+    private List<TaskInterface> mData = new ArrayList<>();
 
-    public TaskAdapter(Context context, List<Taskdefined> data) {
+    private final String mType;
+    private final OnTaskAdapterInteractionListener mListener;
+
+    /**
+     *
+     * @param context *
+     * @param data *
+     * @param type 类型，无类型则可填null
+     * @param listener *
+     */
+    public TaskAdapter(Context context, List<TaskInterface> data, String type, OnTaskAdapterInteractionListener listener) {
         this.mContext = context;
         if (data != null) this.mData = data;
+        mListener = listener;
+        mType = type;
     }
 
-    public void updateData(List<Taskdefined> data) {
+    public void updateData(List<TaskInterface> data) {
         if (data != null) mData = data;
         notifyDataSetChanged();
     }
@@ -51,26 +68,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.UserViewHolder
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        Taskdefined taskdefined = mData.get(position);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext,view);
-                popupMenu.getMenuInflater()
-                        .inflate(R.menu.menu_comment,popupMenu.getMenu());
-                popupMenu.setGravity(Gravity.START);
-                popupMenu.show();
-            }
-        });
-        holder.itemTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DetailedActivity.actionStart(mContext);
-            }
-        });
-        if(position%2==0){
-            holder.imgIC.setColorFilter(mContext.getColor(R.color.blue));
-        }
+        TaskInterface task = mData.get(position);
+        task.setType(mType);
+        holder.tvMDMName.setText(task.getMDMName());
+        holder.tvTask1.setText(task.getTask1());
+        holder.tvTask2.setText(task.getTask2());
+        holder.tvTask3.setText(task.getTask3());
+        holder.tvFlow.setText(task.getFlow());
+
+        holder.imgMore.setOnClickListener(view -> mListener.onClickMore(task, view));
+        holder.itemTask.setOnClickListener(view -> mListener.onClickDetails(task));
+
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -80,10 +88,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.UserViewHolder
         View itemTask;
         @BindView(R.id.item_task_ic)
         ImageView imgIC;
+        @BindView(R.id.item_task_tv_1)
+        TextView tvTask1;
+        @BindView(R.id.item_task_tv_2)
+        TextView tvTask2;
+        @BindView(R.id.item_task_tv_3)
+        TextView tvTask3;
+        @BindView(R.id.item_task_tv_mdmname)
+        TextView tvMDMName;
+        @BindView(R.id.item_task_tv_flow)
+        TextView tvFlow;
 
         public UserViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnTaskAdapterInteractionListener {
+        void onClickMore(TaskInterface task, View view);
+
+        void onClickDetails(TaskInterface task);
     }
 }

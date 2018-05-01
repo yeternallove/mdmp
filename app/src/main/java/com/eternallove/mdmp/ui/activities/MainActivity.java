@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.ui.base.BaseActivity;
@@ -15,6 +16,7 @@ import com.eternallove.mdmp.ui.base.BaseFragment;
 import com.eternallove.mdmp.ui.fragments.MainFragments.HomeFragment;
 import com.eternallove.mdmp.ui.fragments.MainFragments.MeFragment;
 import com.eternallove.mdmp.ui.fragments.MainFragments.TaskFragment;
+import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity {
 
     public final static String[] TAG_FRAGMENT = new String[]{"CHAT", "ACC", "SCH", "ME"};//标签
+    public final static int RS_CANCEL = 0;
+    public final static int RS_EXIT = 9;
+    private long mPressedTime = 0;
 
     private List<BaseFragment> fragments = new ArrayList<>();
     private BaseFragment fragmentNow;
@@ -38,6 +43,7 @@ public class MainActivity extends BaseActivity {
         intent.setClass(context, MainActivity.class);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +51,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         fm = getSupportFragmentManager();
 //        setOverflowShowingAlways();
-//        int mId= PreferenceManager.getDefaultSharedPreferences(this).getInt("mId",-1);
-//        if(mId == -1){
-//            Login2Activity.actionStart(this);
-//        }
+//        LoginActivity.actionStart(this);
         fragments.add(new HomeFragment());
         fragments.add(new TaskFragment());
         fragments.add(new MeFragment());
@@ -59,18 +62,18 @@ public class MainActivity extends BaseActivity {
                 FragmentManager fm = getSupportFragmentManager();
                 switch (item.getItemId()) {
 //                    case R.id.bottom_Nav_item_1:
-//                        switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[0]);
+//                        switchContent(fragmentNow,fragments.getTask(0),TAG_FRAGMENT[0]);
 //                        break;
                     case R.id.bottom_Nav_item_2:
 //                        Login2Activity.actionStart(MainActivity.this);
-                        switchContent(fragmentNow,fragments.get(0),TAG_FRAGMENT[1]);
+                        switchContent(fragmentNow, fragments.get(0), TAG_FRAGMENT[1]);
                         break;
                     case R.id.bottom_Nav_item_3:
 //                        LoginActivity.actionStart(MainActivity.this);
-                        switchContent(fragmentNow,fragments.get(1),TAG_FRAGMENT[2]);
+                        switchContent(fragmentNow, fragments.get(1), TAG_FRAGMENT[2]);
                         break;
                     case R.id.bottom_Nav_item_4:
-                        switchContent(fragmentNow,fragments.get(2),TAG_FRAGMENT[3]);
+                        switchContent(fragmentNow, fragments.get(2), TAG_FRAGMENT[3]);
                         break;
                     default:
                         break;
@@ -127,7 +130,7 @@ public class MainActivity extends BaseActivity {
     private void stateCheck(Bundle saveInstanceState) {
         if (saveInstanceState == null) {
             fragmentNow = fragments.get(0);
-            fm.beginTransaction().add(R.id.framelayout_main, fragmentNow,TAG_FRAGMENT[0]).commit();
+            fm.beginTransaction().add(R.id.framelayout_main, fragmentNow, TAG_FRAGMENT[0]).commit();
         } else {
             FragmentTransaction transaction = fm.beginTransaction();
             boolean show = true;
@@ -171,7 +174,7 @@ public class MainActivity extends BaseActivity {
      */
 //    private void setOverflowShowingAlways() {
 //        try {
-//            ViewConfiguration config = ViewConfiguration.get(this);
+//            ViewConfiguration config = ViewConfiguration.getTask(this);
 //            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
 //            if(menuKeyField != null) {
 //                menuKeyField.setAccessible(true);
@@ -181,4 +184,27 @@ public class MainActivity extends BaseActivity {
 //            e.printStackTrace();
 //        }
 //    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RS_EXIT) {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        long mNowTime = System.currentTimeMillis();
+        /*获取第一次按键时间*/
+        if ((mNowTime - mPressedTime) > 2000) {
+            /*比较两次按键时间差*/
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mPressedTime = mNowTime;
+        } else {
+            /*退出程序*/
+            this.finish();
+            System.exit(0);
+        }
+    }
+
 }

@@ -7,7 +7,7 @@
     <string name="login_hint_account">Account</string>
     <string name="login_hint_password">Password</string>
     <string name="login_server">Select server</string>
-    mUseruser activity-->
+    <!--user activity-->
     <string name="user_mgmt_title">User Management</string>
     <string name="user_mgmt_user">Users</string>
     <string name="user_mgmt_role">Role</string>
@@ -20,11 +20,21 @@
     <string name="server_port">Port</string>
     <string name="server_server_value">106.14.201.240</string>
     <string name="server_port_value">8088</string>
+    <!--changePwd activity-->
+    <string name="change_pwd_title">Change Password</string>
     <!--other-->
-    <string name="edit_title">Edit</string>
-    <string name="edit_save">Save</string>
-    <string name="detailed_activity_title">详情</string>
+    <string name="save">Save</string>
+    <string name="edit_activity_title">Edit</string>
+    <string name="detailed_activity_title">Details</string>
     <string name="settings_activity_title">Settings</string>
+    <string name="me_activity_title">Me</string>
+    <string name="bottom_Nav_item_1">Chats</string>
+    <string name="bottom_Nav_item_2">Contacts</string>
+    <string name="bottom_Nav_item_3">Discover</string>
+    <string name="bottom_Nav_item_4">Me</string>
+    <string name="network">Network connection exception</string>
+
+
 
 
 
@@ -52,10 +62,6 @@
 
 
     <string name="checkBox_remember_pass">remember pass</string>
-    <string name="bottom_Nav_item_1">Chats</string>
-    <string name="bottom_Nav_item_2">Contacts</string>
-    <string name="bottom_Nav_item_3">Discover</string>
-    <string name="bottom_Nav_item_4">Me</string>
 
 
     <!-- Strings related to login -->

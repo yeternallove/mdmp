@@ -21,7 +21,7 @@
 
     <color name="editViewUnderline">#EEEEEE</color>
     <color name="cardBackground">#ffffff</color>
-    <color name="menubackground">#F2F4F7</color>
+    <color name="menubackground">#EBEBEB</color>
     <color name="divider">#E6E6E6</color>
     <color name="listbackground">#EDEFF2</color>
     <color name="btnbackground">#D82196F3</color>

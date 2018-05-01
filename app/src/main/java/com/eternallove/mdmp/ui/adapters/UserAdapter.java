@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
+import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.model.user.UserBean;
-import com.eternallove.mdmp.ui.activities.UserSettiongActivity;
+import com.eternallove.mdmp.ui.activities.UserSettingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserSettiongActivity.actionStart(mContext);
+                UserSettingActivity.actionStart(mContext,(UserView) userBean);
             }
         });
         if(userBean.getEnable() == 0 ){

@@ -23,6 +23,7 @@
             android:src="@drawable/ic_test_renwu" />
 
         <TextView
+            android:id="@+id/item_task_tv_flow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
@@ -55,6 +56,7 @@
             android:background="@drawable/ic_test_lingxing" />
 
         <TextView
+            android:id="@+id/item_task_tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -68,6 +70,7 @@
             android:background="@drawable/ic_test_lingxing" />
 
         <TextView
+            android:id="@+id/item_task_tv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -81,6 +84,7 @@
             android:background="@drawable/ic_test_lingxing" />
 
         <TextView
+            android:id="@+id/item_task_tv_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -103,7 +107,7 @@
             android:background="@drawable/ic_test_lv" />
 
         <TextView
-            android:id="@+id/tv_mdmname"
+            android:id="@+id/item_task_tv_mdmname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"

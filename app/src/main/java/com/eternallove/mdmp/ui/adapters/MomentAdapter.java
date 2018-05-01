@@ -102,7 +102,7 @@
 //            headViewHolder.name.setText(mHeadBean.getHeadName());
 //        } else {
 //            GeneralViewHolder generalViewHolder = (GeneralViewHolder) holder;
-//            MomentBean momentBean = mMomentBeanList.get(position - 1);
+//            MomentBean momentBean = mMomentBeanList.getTask(position - 1);
 //            if(momentBean.getAvatar() ==null){
 //                generalViewHolder.avatar.setImageResource(ICON_LIST[position%10]);
 //            } else {
@@ -136,7 +136,7 @@
 //                generalViewHolder.linkTitle.setText(linkData.getLinktitle());
 //                generalViewHolder.linkTitle.setOnClickListener(new View.OnClickListener() {
 //                    @Override
-//                    public void onClick(View v) {
+//                    public void onSave(View v) {
 //                       Toast.makeText(mContext,"将要跳转到:"+linkData.getUrl(), Toast.LENGTH_SHORT).show();
 //                    }
 //                });
@@ -183,22 +183,22 @@
 //                                    .getDimension(R.dimen.item_general_image_grid_image_max_width);
 //
 //                            Glide.with(mContext)
-//                                    .load(imageList.get(k))
+//                                    .load(imageList.getTask(k))
 //                                    .asBitmap()
 //                                    .transform(new Transformation<Bitmap>() {
 //                                        @Override
 //                                        public Resource<Bitmap> transform(Resource<Bitmap> resource,
 //                                                                          int outWidth,
 //                                                                          int outHeight) {
-//                                            int height = resource.get().getHeight();
-//                                            int width = resource.get().getWidth();
+//                                            int height = resource.getTask().getHeight();
+//                                            int width = resource.getTask().getWidth();
 //                                            if (width > maxWidth) {
 //                                                int time = width / maxWidth;
 //                                                width /= time;
 //                                                height /= time;
 //                                            }
 //                                            Bitmap resizedBitmap = Bitmap.createScaledBitmap(
-//                                                    resource.get(), width, height, false);
+//                                                    resource.getTask(), width, height, false);
 //
 //                                            return new SimpleResource<>(resizedBitmap);
 //                                        }
@@ -226,7 +226,7 @@
 //                            generalViewHolder.gridLayout.addView(imageView);
 //
 //                            Glide.with(mContext)
-//                                    .load(Uri.parse(imageList.get(k)))
+//                                    .load(Uri.parse(imageList.getTask(k)))
 //                                    .placeholder(R.color.colorImagePlaceHolder)
 //                                    .centerCrop()
 //                                    .into(imageView);

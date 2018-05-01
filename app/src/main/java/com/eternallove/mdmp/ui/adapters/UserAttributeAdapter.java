@@ -1,9 +1,8 @@
 package com.eternallove.mdmp.ui.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.model.task.Taskdefined;
-import com.eternallove.mdmp.model.user.UserAttribute;
+import com.eternallove.mdmp.model.interfaces.UserAttribute;
+import com.eternallove.mdmp.ui.fragments.UserFragments.UserAttributeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,12 @@ import butterknife.ButterKnife;
 public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdapter.UserViewHolder> {
     private Context mContext;
     private List<UserAttribute> mData = new ArrayList<>();
+    private final UserAttributeFragment.OnListFragmentInteractionListener mListener;
 
-    public UserAttributeAdapter(Context context, List<UserAttribute> data) {
+    public UserAttributeAdapter(Context context, List<UserAttribute> data, UserAttributeFragment.OnListFragmentInteractionListener listener) {
         this.mContext = context;
         if (data != null) this.mData = data;
+        this.mListener = listener;
     }
 
     public void updateData(List<UserAttribute> data) {
@@ -52,16 +53,11 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         UserAttribute userAttribute = mData.get(position);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext, view);
-                popupMenu.getMenuInflater()
-                        .inflate(R.menu.menu_comment, popupMenu.getMenu());
-                popupMenu.setGravity(Gravity.START);
-                popupMenu.show();
-            }
-        });
+        holder.tvHeadings.setText(userAttribute.getHeadings());
+        holder.tvSecondary.setText(userAttribute.getSecondary());
+        holder.tvOther.setText(userAttribute.getOther());
+        holder.cardView.setOnClickListener(view -> mListener.onClickDetails(userAttribute));
+        holder.imgMore.setOnClickListener(view -> mListener.onClickMore(userAttribute));
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -73,8 +69,10 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
         TextView tvOther;
         @BindView(R.id.item_user_more)
         ImageView imgMore;
+        @BindView(R.id.cardView)
+        CardView cardView;
 
-        public UserViewHolder(View itemView) {
+        UserViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

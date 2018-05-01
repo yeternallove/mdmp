@@ -5,24 +5,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
-import com.eternallove.mdmp.model.task.Taskdefined;
-import com.eternallove.mdmp.model.user.UserBean;
+import com.eternallove.mdmp.model.interfaces.TaskInterface;
+import com.eternallove.mdmp.model.task.TaskDefined;
+import com.eternallove.mdmp.model.user.UserView;
+import com.eternallove.mdmp.ui.activities.DetailedActivity;
 import com.eternallove.mdmp.ui.adapters.TaskAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.eternallove.mdmp.util.RunOnUiThreadUtil;
+import com.eternallove.mdmp.util.gson.DateAdapter;
+import com.eternallove.mdmp.util.gson.GsonHalper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,11 +43,13 @@ import retrofit2.Response;
  * @author: eternallove
  * @date: 2018/4/2 19:42
  */
-public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,TaskAdapter.OnTaskAdapterInteractionListener{
 
+    private final String TYPE = TaskDefined.PEND;
+    
     private Context mContext;
     private TaskAdapter adapter;
-    private List<Taskdefined> mData;
+    private List<TaskInterface> mData;
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -66,77 +74,64 @@ public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshL
         //mRecyclerView
         mData = new ArrayList<>();
         //TODO 测试数据
-        mData.add(new Taskdefined());
-        mData.add(new Taskdefined());
-        mData.add(new Taskdefined());
-        mData.add(new Taskdefined());
-        mData.add(new Taskdefined());
-        mData.add(new Taskdefined());
 
-
-        adapter = new TaskAdapter(getActivity(), mData);
+        adapter = new TaskAdapter(getActivity(), mData, TYPE,this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setHasFixedSize(true);
-        //滑动监听
-//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (Math.abs(dy) > 5) {
-//                    if (dy > 0) {
-//                        fab.hide(true);
-//                    } else {
-//                        fab.show(true);
-//                    }
-//                }
-//            }
-//        });
-
+        updateData();
         return view;
     }
 
     @Override
     public void onRefresh() {
-        Call<ResponseBody> call = MdmpClient.getInstance().getUser();
-        //开始异步请求
-        call.enqueue(new Callback<ResponseBody>() {
+        updateData();
+    }
+
+    private void updateData() {
+        MdmpClient.getInstance().getTask(TYPE).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                swipeRefreshLayout.setRefreshing(false);
                 ResponseBody body = response.body();
+                if (body == null) {
+                    body = response.errorBody();
+                }
                 if (body != null) {
-                    mData.clear();
                     try {
-                        JSONArray jsonArray = new JSONArray(body.string());
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject user = jsonArray.getJSONObject(i);
-                            UserBean userBean = new UserBean();
-                            userBean.setUsername(user.getString("username"));
-                            userBean.setAccount(user.getString("account"));
-                            userBean.setPhone(user.getString("createTime"));
-//                            mData.add(userBean);
-                        }
-//                        adapter.updateData(mData);
-                    } catch (JSONException | IOException e) {
+                        String content = body.string();
+                        Gson gson = GsonHalper.build();
+                        mData = gson.fromJson(content, new TypeToken<List<TaskDefined>>() {
+                        }.getType());
+                        swipeRefreshLayout.setRefreshing(false);
+                        adapter.updateData(mData);
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                RunOnUiThreadUtil.showNetworkToast(mContext);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//            }
-//        }, 2000);
+    }
 
+
+    @Override
+    public void onClickMore(TaskInterface task,View view) {
+        PopupMenu popupMenu = new PopupMenu(mContext, view);
+        popupMenu.getMenuInflater()
+                .inflate(R.menu.menu_comment, popupMenu.getMenu());
+        popupMenu.setGravity(Gravity.START);
+        popupMenu.show();
+    }
+
+    @Override
+    public void onClickDetails(TaskInterface task) {
+        DetailedActivity.actionStart(mContext);
     }
 }
 

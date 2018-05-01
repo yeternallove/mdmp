@@ -25,7 +25,8 @@
     <dimen name="text_margin">14dp</dimen>
     <dimen name="headings">16sp</dimen>
     <dimen name="headlines">24sp</dimen>
-
+    <!--user setting activity-->
+    <dimen name="type_icon_height">76dp</dimen>
 
     <!--account-->
     <dimen name="account_tv_title_height">24dp</dimen>
@@ -35,7 +36,6 @@
     <dimen name="account_item_half_height">32dp</dimen>
     <dimen name="account_item_img_size">32dp</dimen>
     <dimen name="account_item_tv_margin">10dp</dimen>
-    <dimen name="type_icon_height">76dp</dimen>
     <dimen name="type_icon_width">68dp</dimen>
     <dimen name="type_icon_img_size">40dp</dimen>
     <dimen name="type_icon_img_margin_top">12dp</dimen>

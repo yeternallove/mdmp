@@ -18,7 +18,7 @@
             android:navigationIcon="@drawable/ic_left_back"
             app:navigationIcon="@drawable/ic_left_back"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/edit_title">
+            app:title="@string/edit_activity_title">
 
             <Button
                 android:id="@+id/edit_btn_save"
@@ -28,7 +28,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/icon_margin"
                 android:background="@color/transparent"
-                android:text="@string/edit_save" />
+                android:text="@string/save" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 

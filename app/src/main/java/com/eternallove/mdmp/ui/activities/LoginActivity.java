@@ -2,10 +2,7 @@ package com.eternallove.mdmp.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -13,11 +10,11 @@ import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
-import com.eternallove.mdmp.model.test.user.UserTest;
-import com.eternallove.mdmp.model.test.user.UserView;
+import com.eternallove.mdmp.model.user.UserLogin;
+import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.base.BaseActivity;
+import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,8 +30,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
+    private AppManager appManager;
     @BindView(R.id.edt_acc)
     EditText edtAccount;
     @BindView(R.id.edt_pwd)
@@ -57,10 +53,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);
         //hide the status bar
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        appManager = AppManager.getInstance(this);
+
         btnLogin.setOnClickListener(this);
         btnServer.setOnClickListener(this);
 //        lyLogin.setPadding(0,0,0,0);
@@ -71,6 +68,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_btn_login:
+                btnLogin.setEnabled(false);
+//                MainActivity.actionStart(this);
+//                finish();
                 attemptLogin();
                 break;
             case R.id.main_btn_server:
@@ -96,19 +96,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             edtPassword.setError(getString(R.string.error_invalid_password));
             focusView = edtPassword;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(account)) {
+        if (!isAccountValid(account)) {
             edtAccount.setError(getString(R.string.error_field_required));
-            focusView = edtAccount;
-            cancel = true;
-        } else if (!isAccountValid(account)) {
-            edtAccount.setError(getString(R.string.error_invalid_email));
             focusView = edtAccount;
             cancel = true;
         }
@@ -120,33 +116,35 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UserLogin();
+            UserLogin(account,password);
         }
     }
 
     private boolean isAccountValid(String account) {
         //TODO: Replace this with your own logic
 //        return email.contains("@");
-        return account.length() > 0;
+//        return account.length() > 0;
+        return true;
 
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 0;
+//        return password.length() > 0;
+        return true;
     }
 
-    private void UserLogin() {
-        MdmpClient.getInstance().login(new UserTest()).enqueue(new Callback<ResponseBody>() {
+    private void UserLogin(String account,String password) {
+        MdmpClient.getInstance().login(new UserLogin(account,password)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ResponseBody body = response.body();
                 if (body != null) {
                     try {
-                        Gson gson = new Gson();
                         JSONObject json = new JSONObject(body.string());
                         if (json.has("userInfo")) {
-                            UserView userView = new UserView(json.getString("userInfo"));
+                            UserView userView = UserView.build(json.getString("userInfo"));
+                            appManager.login(userView,password);
                             MainActivity.actionStart(LoginActivity.this);
                             finish();
                         }
@@ -157,12 +155,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         e.printStackTrace();
                     }
                 }
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                RunOnUiThreadUtil.showToast(LoginActivity.this, "请检查网络");
+                btnLogin.setEnabled(true);
+                RunOnUiThreadUtil.showNetworkToast(LoginActivity.this);
             }
         });
     }

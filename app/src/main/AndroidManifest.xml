@@ -16,10 +16,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".ui.activities.LoginActivity"
-            android:screenOrientation="portrait"
+        android:theme="@style/AppTheme"
+        android:screenOrientation="portrait">
+        <activity android:name=".ui.activities.SplashActivity"
             android:theme="@style/AppThemeFullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,23 +27,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.Main2Activity"
-            android:theme="@style/AppThemeFullscreen"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.activities.Login2Activity"
+            android:name=".ui.activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeFullscreen" />
         <activity android:name=".ui.activities.MainActivity" />
         <activity android:name=".ui.activities.UserActivity" />
-        <activity
-            android:name=".ui.activities.SettingsActivity"
-            android:label="@string/settings_activity_title"
-            android:theme="@style/AppThemeSetting" />
         <activity android:name=".ui.activities.DetailedActivity" />
         <activity android:name=".ui.activities.MeSettingActivity" />
-        <activity android:name=".ui.activities.UserSettiongActivity" />
+        <activity android:name=".ui.activities.UserSettingActivity" />
         <activity android:name=".ui.activities.EditActivity" />
         <activity android:name=".ui.activities.ServerActivity" />
+        <activity android:name=".ui.activities.ChangePwdActivity" />
+        <activity android:name=".ui.activities.SettingActivity" />
 
         <meta-data
             android:name="com.eternallove.mdmp.util.GlideConfiguration"

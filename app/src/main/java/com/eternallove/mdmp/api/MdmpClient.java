@@ -1,11 +1,18 @@
 package com.eternallove.mdmp.api;
 
 import com.eternallove.mdmp.BuildConfig;
-import com.eternallove.mdmp.model.test.user.UserTest;
+import com.eternallove.mdmp.model.user.UserLogin;
+import com.eternallove.mdmp.model.user.UserView;
+import com.eternallove.mdmp.model.user.department.DepartmentView;
+import com.eternallove.mdmp.model.user.role.RoleView;
+import com.eternallove.mdmp.model.user.viewRight.ViewRightView;
 import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.CookieManager;
+import com.eternallove.mdmp.util.gson.GsonHalper;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Headers;
@@ -24,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author: eternallove
  * @date: 2018/3/21 16:09
  */
-public class MdmpClient{
+public class MdmpClient {
     private static MdmpClient sClient;
 
     private String mUserId = "";
@@ -33,17 +40,23 @@ public class MdmpClient{
     public static MdmpClient getInstance() {
         if (sClient == null) {
             synchronized (MdmpClient.class) {
-                if(sClient==null)
-                sClient = new MdmpClient();
+                if (sClient == null)
+                    sClient = new MdmpClient();
             }
         }
         return sClient;
     }
 
+    //若修改baseURL
+    public void clear() {
+        sClient = null;
+    }
+
     private MdmpClient() {
+        Gson gson = GsonHalper.build();
         mService = new Retrofit.Builder()
                 .baseUrl(getBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
 //                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(createClient())
                 .build()
@@ -101,15 +114,35 @@ public class MdmpClient{
         builder.addInterceptor(parameterInterceptor);
     }
 
-    public Call<ResponseBody> getData() {
-        return mService.getData();
-    }
-
-    public Call<ResponseBody> login(UserTest data) {
+    public Call<ResponseBody> login(UserLogin data) {
         return mService.login(data);
     }
 
     public Call<ResponseBody> getUser() {
         return mService.getUser();
+    }
+
+    public Call<ResponseBody> changePwd(Integer userId, UserView userView) {
+        return mService.changePwd(userId, userView);
+    }
+
+    public Call<ResponseBody> getMySubmit() {
+        return mService.getMySubmit(1, 100, -1);
+    }
+
+    public Call<ResponseBody> getTask(String type) {
+        return mService.getTask(type, 1, 100);
+    }
+
+    public Call<List<RoleView>> getRole() {
+        return mService.getRole();
+    }
+
+    public Call<List<DepartmentView>> getDepartment() {
+        return mService.getDepartment();
+    }
+
+    public Call<List<ViewRightView>> getViewRight() {
+        return mService.getViewRight();
     }
 }

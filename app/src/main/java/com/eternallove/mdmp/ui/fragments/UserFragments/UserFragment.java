@@ -12,17 +12,17 @@ import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
-import com.eternallove.mdmp.model.test.user.UserTest;
 import com.eternallove.mdmp.model.user.UserBean;
+import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.adapters.UserAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.eternallove.mdmp.util.gson.GsonHalper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,9 +66,9 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         //mRecyclerView
         mData = new ArrayList<>();
         //TODO 测试数据
-        mData.add(new UserBean("acc","123","hahaha",0));
-        mData.add(new UserBean("asd","456","hehehe",1));
-        mData.add(new UserBean("asd","456","hehehe",1));
+//        mData.add(new UserBean("acc","123","hahaha",0));
+//        mData.add(new UserBean("asd","456","hehehe",1));
+//        mData.add(new UserBean("asd","456","hehehe",1));
         adapter = new UserAdapter(getActivity(), mData);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(
@@ -88,46 +88,26 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //                }
 //            }
 //        });
-        MdmpClient.getInstance().login(new UserTest()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println(response.headers());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
         return view;
     }
 
     @Override
     public void onRefresh() {
-        Call<ResponseBody> call = MdmpClient.getInstance().getUser();
-        //开始异步请求
-        call.enqueue(new Callback<ResponseBody>() {
+        MdmpClient.getInstance().getUser().enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 swipeRefreshLayout.setRefreshing(false);
                 ResponseBody body = response.body();
                 if (body != null) {
-                    mData.clear();
                     try {
-                        JSONArray jsonArray = new JSONArray(body.string());
-                        for(int i=0;i<jsonArray.length();i++){
-                            JSONObject user = jsonArray.getJSONObject(i);
-                            UserBean userBean = new UserBean();
-                            userBean.setUsername(user.getString("username"));
-                            userBean.setAccount(user.getString("account"));
-                            userBean.setPhone(user.getString("createTime"));
-                            mData.add(userBean);
-                        }
+                        Gson gson = GsonHalper.build();
+                        String users = body.string();
+                        mData = gson.fromJson(users, new TypeToken<List<UserView>>() {
+                        }.getType());
                         adapter.updateData(mData);
-                    } catch (JSONException | IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 

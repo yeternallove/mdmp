@@ -258,15 +258,15 @@ public class MD5 {
 
 	//获取MD5字符串
 	public static String getMD5Str(String string) {
-		String keyStart = "hzmc";//在字符串中加入自定义的key
-		String keyEnd = "yang";//在字符串中加入自定义的key
+		String keyStart = "";//在字符串中加入自定义的key
+		String keyEnd = "";//在字符串中加入自定义的key
 		String MD5 = getInstance().getMD5ofStr(keyStart + string + keyEnd);
-		return MD5;
+		return MD5.toLowerCase();
 	}
 
 	// 测试
 	public static void main(String args[]) {
 		System.out.println(getMD5Str("81dc9bdb52d04dc20036dbd8313ed055"));
-		System.out.println(getMD5Str("123456"));
+		System.out.println(getMD5Str("z123z123z"));
 	}
 }
