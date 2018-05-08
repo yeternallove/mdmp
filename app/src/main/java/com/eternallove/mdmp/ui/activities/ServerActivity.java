@@ -66,12 +66,16 @@ public class ServerActivity extends BaseActivity implements View.OnClickListener
                 boolean save = true;
                 String server = edtServer.getText().toString().trim();
                 String port = edtPort.getText().toString().trim();
-                if(mServer.equals(server)&&mPort.equals(port)){
+                if (mServer.equals(server) && mPort.equals(port)) {
                     break;
                 }
                 if (!mServer.equals(server) && !RegexUtil.isIP(server)) {
                     save = false;
                     RunOnUiThreadUtil.showToast(this, "服务器地址错误");
+                }
+                if (!mPort.equals(port) && !RegexUtil.isPort(port)) {
+                    save = false;
+                    RunOnUiThreadUtil.showToast(this, "端口不存在");
                 }
                 if (save) {
                     appManager.setBaseUrl(server, port);

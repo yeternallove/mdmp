@@ -14,41 +14,36 @@ import java.util.Locale;
  */
 public class TaskDefined implements TaskInterface {
     /**
-     * complete-已完成任务，pend-待处理任务
+     * complete-已完成任务，
+     * pend-待处理任务
      */
     public final static String COMPLETE = "complete";
     public final static String PEND = "pend";
-    private final static int COMPLETE_VALUE = 0xF1;
-    private final static int PEND_VALUE = 0xF2;
-    private final static int DEFINED = 0x0;
-    private int taskType = PEND_VALUE;
-
-    //主键，流程id
+    public final static String DEFAULT = "default";
+    public final static int TO_EXTRACT = 1;
+    /*主键，流程id*/
     private String flowId;
-    //流程名称
+    /*流程名称*/
     private String flowName;
-    //数据容器
+    /*数据容器*/
     private String mdCluster;
-    //数据模型
+    /*数据模型*/
     private String mdModel;
-    //实体名称
+    /*实体名称*/
     private String mdConcepet;
-    //操作类型
+    /*操作类型*/
     private String operateType;
-    //待处理环节
+    /*待处理环节*/
     private String pendingLink;
-    //开始时间
+    /*开始时间*/
     private Date beforeTime;
-    //结束时间
+    /*结束时间*/
     private Date afterTime;
-    //任务状态
+    /*任务状态*/
     private int taskStatus;
-    //节点id
+    /*节点id*/
     private String taskId;
 
-    private void setTaskType(int taskType) {
-        this.taskType = taskType;
-    }
 
     public String getFlowId() {
         return flowId;
@@ -75,6 +70,9 @@ public class TaskDefined implements TaskInterface {
     }
 
     public String getOperateType() {
+        if (operateType == null) {
+            return "";
+        }
         return operateType;
     }
 
@@ -140,42 +138,23 @@ public class TaskDefined implements TaskInterface {
 
 
     @Override
-    public void setType(String type) {
-        switch (type) {
-            case COMPLETE:
-                setTaskType(COMPLETE_VALUE);
-                break;
-            case PEND:
-                setTaskType(PEND_VALUE);
-                break;
-            default:
-                setTaskType(DEFINED);
-                break;
-        }
+    public String getId() {
+        return getFlowId();
     }
 
     @Override
     public String getFlow() {
-        String content = "";
-        switch (taskType) {
-            case COMPLETE_VALUE:
-            case PEND_VALUE:
-                content = getFlowName();
-                break;
-            default:
-                break;
-        }
-        return content;
+        return getFlowName();
     }
 
     @Override
-    public String getTask1() {
+    public String getTask1(String type) {
         String content = "";
-        switch (taskType) {
-            case COMPLETE_VALUE:
+        switch (type) {
+            case COMPLETE:
                 content = getPendingLink();
                 break;
-            case PEND_VALUE:
+            case PEND:
                 content = DateUtil.format(getBeforeTime()) + " 起始时间";
                 break;
             default:
@@ -185,13 +164,13 @@ public class TaskDefined implements TaskInterface {
     }
 
     @Override
-    public String getTask2() {
+    public String getTask2(String type) {
         String content = "";
-        switch (taskType) {
-            case COMPLETE_VALUE:
+        switch (type) {
+            case COMPLETE:
                 content = DateUtil.format(getAfterTime()) + " 起始时间";
                 break;
-            case PEND_VALUE:
+            case PEND:
                 content = getPendingLink();
                 break;
             default:
@@ -201,13 +180,13 @@ public class TaskDefined implements TaskInterface {
     }
 
     @Override
-    public String getTask3() {
+    public String getTask3(String type) {
         String content = "";
-        switch (taskType) {
-            case COMPLETE_VALUE:
+        switch (type) {
+            case COMPLETE:
                 content = DateUtil.format(getBeforeTime()) + " 结束时间";
                 break;
-            case PEND_VALUE:
+            case PEND:
                 content = DateUtil.format(getAfterTime()) + " 上个环节结束时间";
                 break;
             default:
@@ -218,15 +197,26 @@ public class TaskDefined implements TaskInterface {
 
     @Override
     public String getMDMName() {
-        String content = "";
-        switch (taskType) {
-            case COMPLETE_VALUE:
-            case PEND_VALUE:
-                content = getMdConcepet();
-                break;
+        return getMdConcepet();
+    }
+
+    @Override
+    public int getType() {
+        switch (getOperateType()) {
+            case "U":
+                return TYPE_U;
+            case "I":
+                return TYPE_I;
+            case "D":
+                return TYPE_D;
             default:
-                break;
+                return TYPE_NULL;
         }
-        return content;
+    }
+
+    @Override
+    public boolean isShowMore() {
+        return TO_EXTRACT == getTaskStatus();
+
     }
 }

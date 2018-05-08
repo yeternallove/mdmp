@@ -5,9 +5,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.eternallove.mdmp.R;
-import com.eternallove.mdmp.model.interfaces.OnSaveInterface;
+import com.eternallove.mdmp.model.user.UserLogin;
 import com.eternallove.mdmp.model.user.UserView;
+import com.eternallove.mdmp.model.user.department.Department;
+import com.eternallove.mdmp.model.user.department.DepartmentView;
+import com.eternallove.mdmp.model.user.role.Role;
+import com.eternallove.mdmp.model.user.role.RoleView;
+import com.eternallove.mdmp.ui.activities.EditActivity.OnSaveInterface;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -30,12 +37,15 @@ public class AppManager {
 
     private OnSaveInterface listener;
 
+    private List<Department> departments = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
-    private static final String BASE_URL = "http://{localhost}:{port}/mdmp/";
-    private static final String SP_PASSWORD = "APP_ETERNALLOVE";
-    private static final String SP_USER = "myUser";
-    private static final String SP_PORT = "port";
-    private static final String SP_SERVER = "server";
+
+    private final static String BASE_URL = "http://{localhost}:{port}/mdmp/";
+    private final static String SP_PASSWORD = "APP_ETERNALLOVE";
+    private final static String SP_USER = "myUser";
+    private final static String SP_PORT = "port";
+    private final static String SP_SERVER = "server";
 
 
     private AppManager(Context context) {
@@ -58,7 +68,17 @@ public class AppManager {
         return appManager;
     }
 
-    public UserView getUser() {
+    public UserView getUserInfo() {
+        mUser = getUser();
+        if (mUser == null) {
+            return null;
+        }
+        UserView user = (UserView) mUser.clone();
+        user.setPassword(null);
+        return user;
+    }
+
+    private UserView getUser() {
         if (mUser == null) {
             String user = pref.getString(SP_USER, "");
             if ("".equals(user)) {
@@ -68,6 +88,14 @@ public class AppManager {
             }
         }
         return mUser;
+    }
+
+    public UserLogin getLoginInfo() {
+        mUser = getUser();
+        if (mUser == null) {
+            return null;
+        }
+        return new UserLogin(mUser);
     }
 
     public void logout() {
@@ -95,12 +123,17 @@ public class AppManager {
         editor.apply();
     }
 
-    public void login(UserView mUser) {
-        this.mUser = mUser;
+    /**
+     * 自动登录 更新用户信息
+     *
+     * @param user
+     */
+    public void updateUser(UserView user) {
+        this.mUser = (UserView) user.clone();
         String pwd = pref.getString(SP_PASSWORD, "");
-        mUser.setPassword(MD5.getMD5Str(pwd));
+        this.mUser.setPassword(MD5.getMD5Str(pwd));
         editor = pref.edit();
-        editor.putString(SP_USER, mUser.toString());
+        editor.putString(SP_USER, this.mUser.toString());
         editor.apply();
     }
 
@@ -120,7 +153,7 @@ public class AppManager {
         mPort = port;
         BaseUrl = BASE_URL
                 .replace("{localhost}", mServer)
-                .replace("{mPort}", mPort);
+                .replace("{port}", mPort);
 
         editor = pref.edit();
         editor.putString(SP_SERVER, mServer);
@@ -142,5 +175,23 @@ public class AppManager {
 
     public void setListener(OnSaveInterface listener) {
         this.listener = listener;
+    }
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<DepartmentView> departments) {
+        this.departments.clear();
+        this.departments.addAll(departments);
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleView> roles) {
+        this.roles.clear();
+        this.roles.addAll(roles);
     }
 }

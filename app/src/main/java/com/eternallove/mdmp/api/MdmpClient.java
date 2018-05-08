@@ -1,6 +1,9 @@
 package com.eternallove.mdmp.api;
 
 import com.eternallove.mdmp.BuildConfig;
+import com.eternallove.mdmp.model.task.MonitorTaskInfo;
+import com.eternallove.mdmp.model.parameter.TaskAudit;
+import com.eternallove.mdmp.model.task.TaskDefined;
 import com.eternallove.mdmp.model.user.UserLogin;
 import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.model.user.department.DepartmentView;
@@ -65,7 +68,6 @@ public class MdmpClient {
     }
 
     private OkHttpClient createClient() {
-
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -118,7 +120,15 @@ public class MdmpClient {
         return mService.login(data);
     }
 
-    public Call<ResponseBody> getUser() {
+    public Call<ResponseBody> logout() {
+        return mService.logout();
+    }
+
+    public Call<UserView> getUser(int userId) {
+        return mService.getUser(userId);
+    }
+
+    public Call<List<UserView>> getUser() {
         return mService.getUser();
     }
 
@@ -126,12 +136,28 @@ public class MdmpClient {
         return mService.changePwd(userId, userView);
     }
 
+    public Call<ResponseBody> updateUser(Integer userId, UserView userView) {
+        return mService.updateUser(userId, userView);
+    }
+
     public Call<ResponseBody> getMySubmit() {
         return mService.getMySubmit(1, 100, -1);
     }
 
-    public Call<ResponseBody> getTask(String type) {
-        return mService.getTask(type, 1, 100);
+    public Call<List<TaskDefined>> getTasks(String type) {
+        return mService.getTasks(type, 1, 100);
+    }
+
+    public Call<MonitorTaskInfo> getTask(String id) {
+        return mService.getTask(id);
+    }
+
+    public Call<ResponseBody> extractTask(String taskId) {
+        return mService.extractTask(taskId);
+    }
+
+    public Call<ResponseBody> handleTask(String taskId, TaskAudit taskAudit) {
+        return mService.handleTask(taskId, taskAudit);
     }
 
     public Call<List<RoleView>> getRole() {
@@ -145,4 +171,14 @@ public class MdmpClient {
     public Call<List<ViewRightView>> getViewRight() {
         return mService.getViewRight();
     }
+
+    public Call<ResponseBody> getTaskSize(String type) {
+        return mService.getTaskSize(type, 1, 100);
+    }
+
+    public Call<ResponseBody> getMyTaskSize(int currentPage, int pageSize) {
+        return mService.getMyTaskSize(1, 100, -1);
+    }
+
+
 }

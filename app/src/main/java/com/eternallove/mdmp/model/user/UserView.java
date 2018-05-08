@@ -5,6 +5,7 @@ import com.eternallove.mdmp.util.gson.DateAdapter;
 import com.eternallove.mdmp.util.gson.GsonHalper;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

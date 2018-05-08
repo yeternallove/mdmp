@@ -1,5 +1,6 @@
 package com.eternallove.mdmp.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.model.user.UserBean;
 import com.eternallove.mdmp.ui.activities.UserSettingActivity;
+import com.eternallove.mdmp.ui.fragments.UserFragments.UserFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,14 @@ import butterknife.ButterKnife;
  */
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private Context mContext;
-    private List<UserBean> mData = new ArrayList<>();
+    private List<UserView> mData = new ArrayList<>();
 
-    public UserAdapter(Context context, List<UserBean> data) {
+    public UserAdapter(Context context, List<UserView> data) {
         this.mContext = context;
         if (data != null) this.mData = data;
     }
 
-    public void updateData(List<UserBean> data) {
+    public void updateData(List<UserView> data) {
         if (data != null) mData = data;
         notifyDataSetChanged();
     }
@@ -50,26 +52,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        UserBean userBean = mData.get(position);
+        UserView userBean = mData.get(position);
         holder.mTvNickName.setText(userBean.getUsername());
         holder.mTvAccount.setText(userBean.getAccount());
         holder.mTvOther.setText(userBean.getPhone());
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mContext,view);
-                popupMenu.getMenuInflater()
-                        .inflate(R.menu.menu_comment,popupMenu.getMenu());
-                popupMenu.setGravity(Gravity.START);
-                popupMenu.show();
-            }
+        holder.imgMore.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(mContext,view);
+            popupMenu.getMenuInflater()
+                    .inflate(R.menu.menu_comment,popupMenu.getMenu());
+            popupMenu.setGravity(Gravity.START);
+            popupMenu.show();
         });
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserSettingActivity.actionStart(mContext,(UserView) userBean);
-            }
-        });
+        holder.cardView.setOnClickListener(view -> UserSettingActivity.actionStart((Activity) mContext, UserFragment.REQ_SETTING, userBean));
         if(userBean.getEnable() == 0 ){
             holder.imgNot.setVisibility(View.VISIBLE);
         }else{

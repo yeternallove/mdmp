@@ -23,9 +23,9 @@
 // */
 //public class ItemFragment extends BaseFragment {
 //
-//    // TODO: Customize parameter argument names
+//    // : Customize parameter argument names
 //    private static final String ARG_COLUMN_COUNT = "column-count";
-//    // TODO: Customize parameters
+//    // : Customize parameters
 //    private int mColumnCount = 1;
 //    private OnListFragmentInteractionListener mListener;
 //
@@ -36,7 +36,7 @@
 //    public ItemFragment() {
 //    }
 //
-//    // TODO: Customize parameter initialization
+//    // : Customize parameter initialization
 //    @SuppressWarnings("unused")
 //    public static ItemFragment newInstance(int columnCount) {
 //        ItemFragment fragment = new ItemFragment();
@@ -101,7 +101,7 @@
 //     * >Communicating with Other Fragments</a> for more information.
 //     */
 //    public interface OnListFragmentInteractionListener {
-//        // TODO: Update argument type and name
+//        // : Update argument type and name
 //        void onListFragmentInteraction(DummyItem item);
 //    }
 //

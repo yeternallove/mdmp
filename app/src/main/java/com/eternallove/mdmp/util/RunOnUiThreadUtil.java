@@ -1,18 +1,11 @@
 package com.eternallove.mdmp.util;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.PopupWindow;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.eternallove.mdmp.R;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * @description:
@@ -34,59 +27,17 @@ public class RunOnUiThreadUtil {
         if (NETWORK == null) {
             NETWORK = context.getString(R.string.network);
         }
-       showToast(context,NETWORK);
+        showToast(context, NETWORK);
     }
 
-    public static PopupWindow showPopup(Activity activity) {
-        View mPopupView = activity.getLayoutInflater().inflate(R.layout.view_popupwindow, null);
-        PopupWindow mPopupWindow = new PopupWindow(mPopupView, MATCH_PARENT, WRAP_CONTENT, true);
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable(activity.getResources(), (Bitmap) null));
-
-        mPopupWindow.getContentView().setFocusableInTouchMode(true);
-        mPopupWindow.getContentView().setFocusable(true);
-        return mPopupWindow;
+    public static void showAlertDialog(Context context, String[] items, DialogInterface.OnClickListener listener) {
+        //dialog参数设置
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);  //先得到构造器
+        builder.setTitle("请选择"); //设置标题
+        //builder.setMessage("是否确认退出?"); //设置内容
+        //builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+        //设置列表显示，注意设置了列表显示就不要设置builder.setMessage()了，否则列表不起作用。
+        builder.setItems(items, listener);
+        builder.create().show();
     }
-
-    public static View.OnKeyListener getKeyListener(PopupWindow mPopupWindow){
-        return (v, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0
-                    && event.getAction() == KeyEvent.ACTION_DOWN) {
-                if (mPopupWindow.isShowing()) {
-                    mPopupWindow.dismiss();
-                }
-                return true;
-            }
-            return false;
-        };
-    }
-//    private void getDatePickerDialog() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        mDataPicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//
-//                mCalendar.set(year, monthOfYear, dayOfMonth);
-//                tvDay.setText(dateFormat.format(mCalendar.getTime()));
-//            }
-//        }, calendar.getTask(Calendar.YEAR), calendar.getTask(Calendar.MONTH), calendar.getTask(Calendar.DAY_OF_MONTH));
-//        mDataPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-//        mDataPicker.show();
-//    }
-//
-//    private void getTimePickerDialog() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-//            @Override
-//            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-//                mCalendar.set(Calendar.MINUTE, minute);
-//                tvTime.setText(timeFormat.format(mCalendar.getTime()));
-//            }
-//        }, calendar.getTask(Calendar.HOUR_OF_DAY), calendar.getTask(Calendar.MINUTE), true);
-//        mTimePicker.show();
-//    }
 }

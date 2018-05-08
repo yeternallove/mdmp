@@ -113,10 +113,9 @@ public class MySubmitTask implements TaskInterface {
         this.userId = userId;
     }
 
-
     @Override
-    public void setType(String type) {
-
+    public String getId() {
+        return getFlowId();
     }
 
     @Override
@@ -125,14 +124,14 @@ public class MySubmitTask implements TaskInterface {
     }
 
     @Override
-    public String getTask1() {
+    public String getTask1(String type) {
         return getPendingLink();
     }
 
     @Override
-    public String getTask2() {
+    public String getTask2(String type) {
         String content = "";
-        switch (getProcessStatus()){
+        switch (getProcessStatus()) {
             case STATUS_DEFAULT:
                 content = "";
                 break;
@@ -152,12 +151,32 @@ public class MySubmitTask implements TaskInterface {
     }
 
     @Override
-    public String getTask3() {
-        return DateUtil.format(getSubmitTime())+" 提交时间";
+    public String getTask3(String type) {
+        return DateUtil.format(getSubmitTime()) + " 提交时间";
     }
 
     @Override
     public String getMDMName() {
         return getMdConcepet();
     }
+
+    @Override
+    public int getType() {
+        switch (getOperateType()) {
+            case "U":
+                return TYPE_U;
+            case "I":
+                return TYPE_I;
+            case "D":
+                return TYPE_D;
+            default:
+                return TYPE_NULL;
+        }
+    }
+
+    @Override
+    public boolean isShowMore() {
+        return false;
+    }
+
 }

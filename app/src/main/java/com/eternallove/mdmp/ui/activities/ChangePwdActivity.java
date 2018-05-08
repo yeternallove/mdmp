@@ -15,7 +15,6 @@ import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.MD5;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +60,7 @@ public class ChangePwdActivity extends BaseActivity implements View.OnClickListe
         ButterKnife.bind(this);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        userView = AppManager.getInstance(this).getUser();
+        userView = AppManager.getInstance(this).getUserInfo();
         btnSave.setOnClickListener(this);
     }
 

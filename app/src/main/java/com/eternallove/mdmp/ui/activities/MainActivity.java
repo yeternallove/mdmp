@@ -24,11 +24,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.eternallove.mdmp.util.Constant.RS_EXIT;
+
 public class MainActivity extends BaseActivity {
 
     public final static String[] TAG_FRAGMENT = new String[]{"CHAT", "ACC", "SCH", "ME"};//标签
-    public final static int RS_CANCEL = 0;
-    public final static int RS_EXIT = 9;
     private long mPressedTime = 0;
 
     private List<BaseFragment> fragments = new ArrayList<>();
@@ -56,30 +56,23 @@ public class MainActivity extends BaseActivity {
         fragments.add(new TaskFragment());
         fragments.add(new MeFragment());
         stateCheck(savedInstanceState);
-        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentManager fm = getSupportFragmentManager();
-                switch (item.getItemId()) {
+        mBottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
 //                    case R.id.bottom_Nav_item_1:
-//                        switchContent(fragmentNow,fragments.getTask(0),TAG_FRAGMENT[0]);
 //                        break;
-                    case R.id.bottom_Nav_item_2:
-//                        Login2Activity.actionStart(MainActivity.this);
-                        switchContent(fragmentNow, fragments.get(0), TAG_FRAGMENT[1]);
-                        break;
-                    case R.id.bottom_Nav_item_3:
-//                        LoginActivity.actionStart(MainActivity.this);
-                        switchContent(fragmentNow, fragments.get(1), TAG_FRAGMENT[2]);
-                        break;
-                    case R.id.bottom_Nav_item_4:
-                        switchContent(fragmentNow, fragments.get(2), TAG_FRAGMENT[3]);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
+                case R.id.bottom_Nav_item_2:
+                    switchContent(fragmentNow, fragments.get(0), TAG_FRAGMENT[1]);
+                    return true;
+                case R.id.bottom_Nav_item_3:
+                    switchContent(fragmentNow, fragments.get(1), TAG_FRAGMENT[2]);
+                    return true;
+                case R.id.bottom_Nav_item_4:
+                    switchContent(fragmentNow, fragments.get(2), TAG_FRAGMENT[3]);
+                    return true;
+                default:
+                    break;
             }
+            return false;
         });
     }
 //    @Override
@@ -189,7 +182,10 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RS_EXIT) {
             finish();
+        }else{
+            fragmentNow.onActivityResult(requestCode,resultCode,data);
         }
+
     }
 
     @Override

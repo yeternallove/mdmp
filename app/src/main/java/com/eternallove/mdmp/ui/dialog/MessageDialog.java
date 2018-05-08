@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
@@ -14,22 +15,30 @@ import com.eternallove.mdmp.R;
  * @author: eternallove
  * @date: 2018/4/29 15:28
  */
-public class SelfDialog extends Dialog{
+public class MessageDialog extends Dialog {
 
     private Button yes;//确定按钮
     private Button no;//取消按钮
-    private TextView titleTv;//消息标题文本
-    private TextView messageTv;//消息提示文本
+    private TextView tvTitle;//消息标题文本
+    private TextView tvMessage;//消息提示文本
+    private EditText edtNote;//备注填写
     private String titleStr;//从外界设置的title文本
     private String messageStr;//从外界设置的消息文本
-    //确定文本和取消文本的显示内容
-    private String yesStr, noStr;
+    private String yesStr, noStr;//确定文本和取消文本的显示内容
+    private String commentHint;//备注
 
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
 
-    public SelfDialog(Context context) {
+    public MessageDialog(Context context) {
         super(context, R.style.MyDialog);
+    }
+
+    public MessageDialog(Context context, String title, String commentHint) {
+        this(context);
+        this.titleStr = title;
+        this.commentHint = commentHint;
+        setNoOnclickListener("否", this::dismiss);
     }
 
     /**
@@ -59,7 +68,6 @@ public class SelfDialog extends Dialog{
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +81,6 @@ public class SelfDialog extends Dialog{
         initData();
         //初始化界面控件的事件
         initEvent();
-
     }
 
     /**
@@ -85,7 +92,7 @@ public class SelfDialog extends Dialog{
             @Override
             public void onClick(View v) {
                 if (yesOnclickListener != null) {
-                    yesOnclickListener.onYesClick();
+                    yesOnclickListener.onYesClick(edtNote.getText().toString().trim());
                 }
             }
         });
@@ -106,10 +113,17 @@ public class SelfDialog extends Dialog{
     private void initData() {
         //如果用户自定了title和message
         if (titleStr != null) {
-            titleTv.setText(titleStr);
+            tvTitle.setText(titleStr);
         }
         if (messageStr != null) {
-            messageTv.setText(messageStr);
+            tvMessage.setText(messageStr);
+        } else {
+            tvMessage.setVisibility(View.GONE);
+        }
+        if (commentHint != null) {
+            edtNote.setHint(commentHint);
+        } else {
+            edtNote.setVisibility(View.GONE);
         }
         //如果设置按钮的文字
         if (yesStr != null) {
@@ -126,33 +140,33 @@ public class SelfDialog extends Dialog{
     private void initView() {
         yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
-        titleTv = (TextView) findViewById(R.id.title);
-        messageTv = (TextView) findViewById(R.id.message);
+        tvTitle = (TextView) findViewById(R.id.title);
+        tvMessage = (TextView) findViewById(R.id.message);
+        edtNote = (EditText) findViewById(R.id.note);
     }
 
-    /**
-     * 从外界Activity为Dialog设置标题
-     *
-     * @param title
-     */
     public void setTitle(String title) {
         titleStr = title;
     }
 
-    /**
-     * 从外界Activity为Dialog设置dialog的message
-     *
-     * @param message
-     */
+
     public void setMessage(String message) {
         messageStr = message;
+    }
+
+    public void setCommentHint(String commentHint) {
+        this.commentHint = commentHint;
+    }
+
+    public void cancel() {
+        this.dismiss();
     }
 
     /**
      * 设置确定按钮和取消被点击的接口
      */
     public interface onYesOnclickListener {
-        public void onYesClick();
+        public void onYesClick(String note);
     }
 
     public interface onNoOnclickListener {

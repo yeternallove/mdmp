@@ -21,13 +21,17 @@
 
     <color name="editViewUnderline">#EEEEEE</color>
     <color name="cardBackground">#ffffff</color>
-    <color name="menubackground">#EBEBEB</color>
+    <color name="menuBackground">#EBEBEB</color>
     <color name="divider">#E6E6E6</color>
-    <color name="listbackground">#EDEFF2</color>
-    <color name="btnbackground">#D82196F3</color>
-    <color name="textcolor">#12b7f5</color>
+    <color name="listBackground">#EDEFF2</color>
+    <color name="btnBackground">#D82196F3</color>
+    <color name="textColor">#12b7f5</color>
+    <color name="taskHead">#b2ebf2</color>
 
-    <color name="searchmenu">#4BA1EE</color>
+    <color name="dialog_color">#38ADFF</color>
+    <color name="dialog_color_gb">#393939</color>
+
+    <color name="searchMenu">#4BA1EE</color>
     <color name="colorImagePlaceHolder">#EEEEEE</color>
     <color name="btn_gray_normal">#c0c0c0</color>
 

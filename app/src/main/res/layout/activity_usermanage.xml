@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/menubackground"
+    android:background="@color/menuBackground"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -14,12 +14,23 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="?android:attr/colorPrimary"
             android:navigationIcon="@drawable/ic_left_back"
             app:navigationIcon="@drawable/ic_left_back"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/detailed_activity_title" />
+            app:title="@string/detailed_activity_title">
+
+            <Button
+                android:id="@+id/edit_btn_save"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/icon_margin"
+                android:background="@color/transparent"
+                android:text="@string/save" />
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
 
@@ -52,7 +63,7 @@
                 android:layout_height="@dimen/fab_size"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_banner_1"/>
+                android:src="@drawable/ic_banner_1" />
 
             <View
                 android:layout_width="match_parent"

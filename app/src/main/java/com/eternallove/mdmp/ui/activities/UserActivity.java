@@ -27,12 +27,10 @@ import butterknife.ButterKnife;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener, UserAttributeFragment.OnListFragmentInteractionListener {
 
-    public static final int SCH_ADD_RESULT_CANCELED = 0;
-    public static final int SCH_ADD_SAVE = 1;
     //子页（fragment）标记
-    public static final int USER_ATTRIBUTE_1 = 1;
-    public static final int USER_ATTRIBUTE_2 = 2;
-    public static final int USER_ATTRIBUTE_3 = 3;
+    public static final int USER_ATTRIBUTE_1 = 0x1;
+    public static final int USER_ATTRIBUTE_2 = 0x2;
+    public static final int USER_ATTRIBUTE_3 = 0x3;
 
     private final String[] titles = {"用户列表", "角色列表", "视图权限", "部门列表"};
     private FragmentAdapter adapter;
@@ -56,12 +54,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         //初始化TabLayout的title
         for (String title : titles) {
@@ -117,6 +110,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.getItem(0).onActivityResult(requestCode, resultCode, data);
     }
 
     private int getFragmentTag(UserAttribute userAttribute) {

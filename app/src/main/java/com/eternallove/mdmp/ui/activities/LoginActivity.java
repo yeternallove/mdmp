@@ -3,6 +3,7 @@ package com.eternallove.mdmp.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.eternallove.mdmp.api.MdmpClient;
 import com.eternallove.mdmp.model.user.UserLogin;
 import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.base.BaseActivity;
+import com.eternallove.mdmp.ui.dialog.PendingDialog;
 import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
@@ -31,6 +33,7 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private AppManager appManager;
+    private PendingDialog dialog;
     @BindView(R.id.edt_acc)
     EditText edtAccount;
     @BindView(R.id.edt_pwd)
@@ -58,6 +61,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         appManager = AppManager.getInstance(this);
 
+        dialog = new PendingDialog(this,"正在登录...");
         btnLogin.setOnClickListener(this);
         btnServer.setOnClickListener(this);
 //        lyLogin.setPadding(0,0,0,0);
@@ -116,7 +120,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UserLogin(account,password);
+            //TODO 测试使用
+            if (account.equals("1")) {
+                MainActivity.actionStart(this);
+                finish();
+            }
+            UserLogin(account, password);
         }
     }
 
@@ -134,8 +143,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         return true;
     }
 
-    private void UserLogin(String account,String password) {
-        MdmpClient.getInstance().login(new UserLogin(account,password)).enqueue(new Callback<ResponseBody>() {
+    private void UserLogin(String account, String password) {
+        dialog.show();
+        MdmpClient.getInstance().login(new UserLogin(account, password)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 ResponseBody body = response.body();
@@ -144,7 +154,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         JSONObject json = new JSONObject(body.string());
                         if (json.has("userInfo")) {
                             UserView userView = UserView.build(json.getString("userInfo"));
-                            appManager.login(userView,password);
+                            appManager.login(userView, password);
                             MainActivity.actionStart(LoginActivity.this);
                             finish();
                         }
@@ -155,13 +165,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         e.printStackTrace();
                     }
                 }
+                saveFailure();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                btnLogin.setEnabled(true);
+                saveFailure();
                 RunOnUiThreadUtil.showNetworkToast(LoginActivity.this);
             }
         });
+    }
+
+    private void saveFailure() {
+        btnLogin.setEnabled(true);
+        new Handler().postDelayed(() -> dialog.cancel(), 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dialog.dismiss();
     }
 }

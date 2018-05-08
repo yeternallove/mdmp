@@ -45,8 +45,8 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         appManager = AppManager.getInstance(this);
-        UserView userView = appManager.getUser();
-        if (userView != null) {
+        UserLogin login = appManager.getLoginInfo();
+        if (login != null) {
 //            //1.5S的延迟
 //            Timer timer =new Timer();
 //            TimerTask task =new TimerTask() {
@@ -57,11 +57,10 @@ public class SplashActivity extends BaseActivity {
 //                }
 //            };
 //            timer.schedule(task,1500);
-            UserLogin user = new UserLogin(userView);
-            userLogin(this, user);
+
+            userLogin(this, login);
         } else {
-            LoginActivity.actionStart(this);
-            finish();
+            startLogin();
         }
     }
 
@@ -75,13 +74,13 @@ public class SplashActivity extends BaseActivity {
                         JSONObject json = new JSONObject(body.string());
                         if (json.has("userInfo")) {
                             UserView userView = UserView.build(json.getString("userInfo"));
-                            appManager.login(userView);
-                            MainActivity.actionStart(context);
-                            finish();
+                            appManager.updateUser(userView);
+                            startMain();
                         }
                         if (json.has("error")) {
                             RunOnUiThreadUtil.showToast(context, "自动登录失败");
-                            LoginActivity.actionStart(context);
+                            appManager.logout();
+                            startLogin();
                         }
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
@@ -91,8 +90,17 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                LoginActivity.actionStart(context);
+                startLogin();
             }
         });
+    }
+    private void startLogin(){
+        LoginActivity.actionStart(SplashActivity.this);
+        finish();
+    }
+
+    private void startMain(){
+        MainActivity.actionStart(SplashActivity.this);
+        finish();
     }
 }

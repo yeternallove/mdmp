@@ -5,7 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/listbackground"
+    android:background="@color/listBackground"
     tools:context="com.eternallove.mdmp.ui.activities.UserActivity">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

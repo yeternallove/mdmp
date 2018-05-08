@@ -1,6 +1,7 @@
 package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,8 @@ import com.eternallove.mdmp.ui.fragments.TaskFragments.TaskChildren3Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.eternallove.mdmp.util.Constant.RS_EXIT;
+
 
 /**
  * @description:
@@ -29,9 +32,7 @@ import java.util.List;
 public class TaskFragment extends BaseFragment {
     private View rootView;
     private Context mContext;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-
+    FragmentAdapter adapter;
 
     @Override
     public void onAttach(Context context) {// API>=23才会调用
@@ -48,8 +49,8 @@ public class TaskFragment extends BaseFragment {
 
 
     private void InitView() {
-        mTabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-        mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+        TabLayout mTabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
+        ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
 
         //初始化TabLayout的title
         String[] titles = {"待处理", "已完成", "我提交"};
@@ -63,13 +64,17 @@ public class TaskFragment extends BaseFragment {
         fragments.add(new TaskChildren3Fragment());
 
         //创建ViewPager的adapter
-        FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
+         adapter = new FragmentAdapter(getChildFragmentManager(), fragments, titles);
         mViewPager.setAdapter(adapter);
         //千万别忘了，关联TabLayout与ViewPager
         //同时也要覆写PagerAdapter的getPageTitle方法，否则Tab没有title
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(adapter);
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.getItem(0).onActivityResult(requestCode,resultCode,data);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.eternallove.mdmp.ui.fragments.TaskFragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -41,7 +42,7 @@ import retrofit2.Response;
  * @author: eternallove
  * @date: 2018/4/2 19:42
  */
-public class TaskChildren3Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,TaskAdapter.OnTaskAdapterInteractionListener{
+public class TaskChildren3Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, TaskAdapter.OnTaskAdapterInteractionListener {
 
     private Context mContext;
     private TaskAdapter adapter;
@@ -71,7 +72,7 @@ public class TaskChildren3Fragment extends BaseFragment implements SwipeRefreshL
         mData = new ArrayList<>();
         //TODO 测试数据
 
-        adapter = new TaskAdapter(getActivity(), mData,null,this);
+        adapter = new TaskAdapter(getActivity(), mData, null, this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -117,17 +118,12 @@ public class TaskChildren3Fragment extends BaseFragment implements SwipeRefreshL
 
 
     @Override
-    public void onClickMore(TaskInterface task,View view) {
-        PopupMenu popupMenu = new PopupMenu(mContext, view);
-        popupMenu.getMenuInflater()
-                .inflate(R.menu.menu_comment, popupMenu.getMenu());
-        popupMenu.setGravity(Gravity.START);
-        popupMenu.show();
+    public void onClickMore(TaskInterface task, View view) {
     }
 
     @Override
     public void onClickDetails(TaskInterface task) {
-        DetailedActivity.actionStart(mContext);
+        DetailedActivity.actionStart(mContext, task.getId());
     }
 
 

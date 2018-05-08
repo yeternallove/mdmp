@@ -21,6 +21,8 @@ import com.eternallove.mdmp.model.user.viewRight.ViewRightView;
 import com.eternallove.mdmp.ui.activities.UserActivity;
 import com.eternallove.mdmp.ui.adapters.UserAttributeAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
+import com.eternallove.mdmp.util.AppManager;
+import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +40,16 @@ import retrofit2.Response;
  */
 public class UserAttributeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String FRAGMENT_TAG = "column-count";
+    private final static String FRAGMENT_TAG = "column-count";
 
     private int mTag;
     private Context mContext;
     private UserAttributeAdapter adapter;
     private List<UserAttribute> mData = new ArrayList<>();
     private OnListFragmentInteractionListener mListener;
+
     private MdmpClient mClient;
+    private AppManager appManager;
 
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -84,7 +88,10 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) (mContext.getResources().getDisplayMetrics().density * 64));
         swipeRefreshLayout.setOnRefreshListener(this);
+
         mClient = MdmpClient.getInstance();
+        appManager = AppManager.getInstance();
+
         //mRecyclerView
         adapter = new UserAttributeAdapter(getActivity(), mData, mListener);
         mRecyclerView.setAdapter(adapter);
@@ -135,15 +142,18 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
             public void onResponse(Call<List<RoleView>> call, Response<List<RoleView>> response) {
                 List<RoleView> roleViews = response.body();
                 if (roleViews != null) {
+                    appManager.setRoles(roleViews);
                     mData.clear();
                     mData.addAll(roleViews);
+                    adapter.updateData(mData);
                 }
-                updateData();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<RoleView>> call, Throwable t) {
-
+                RunOnUiThreadUtil.showNetworkToast(getActivity());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -156,13 +166,15 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
                 if (views != null) {
                     mData.clear();
                     mData.addAll(views);
+                    adapter.updateData(mData);
                 }
-                updateData();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<ViewRightView>> call, Throwable t) {
-
+                RunOnUiThreadUtil.showNetworkToast(getActivity());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -173,21 +185,19 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
             public void onResponse(Call<List<DepartmentView>> call, Response<List<DepartmentView>> response) {
                 List<DepartmentView> departmentViews = response.body();
                 if (departmentViews != null) {
+                    appManager.setDepartments(departmentViews);
                     mData.clear();
                     mData.addAll(departmentViews);
+                    adapter.updateData(mData);
                 }
-                updateData();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<DepartmentView>> call, Throwable t) {
-
+                RunOnUiThreadUtil.showNetworkToast(getActivity());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
-    }
-
-    private void updateData() {
-        adapter.updateData(mData);
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

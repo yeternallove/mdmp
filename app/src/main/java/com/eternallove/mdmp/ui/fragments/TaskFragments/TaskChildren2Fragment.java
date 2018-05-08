@@ -1,5 +1,6 @@
 package com.eternallove.mdmp.ui.fragments.TaskFragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,14 +21,12 @@ import com.eternallove.mdmp.ui.activities.DetailedActivity;
 import com.eternallove.mdmp.ui.adapters.TaskAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
-import com.eternallove.mdmp.util.gson.DateAdapter;
 import com.eternallove.mdmp.util.gson.GsonHalper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,10 +41,10 @@ import retrofit2.Response;
  * @author: eternallove
  * @date: 2018/4/2 19:42
  */
-public class TaskChildren2Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,TaskAdapter.OnTaskAdapterInteractionListener{
+public class TaskChildren2Fragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, TaskAdapter.OnTaskAdapterInteractionListener {
 
     private final String TYPE = TaskDefined.COMPLETE;
-    
+
     private Context mContext;
     private TaskAdapter adapter;
     private List<TaskInterface> mData;
@@ -73,8 +72,9 @@ public class TaskChildren2Fragment extends BaseFragment implements SwipeRefreshL
         //mRecyclerView
         mData = new ArrayList<>();
         //TODO 测试数据
+        mData.add(new TaskDefined());
 
-        adapter = new TaskAdapter(getActivity(), mData, TYPE,this);
+        adapter = new TaskAdapter(getActivity(), mData, TYPE, this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -89,29 +89,29 @@ public class TaskChildren2Fragment extends BaseFragment implements SwipeRefreshL
     }
 
     private void updateData() {
-        MdmpClient.getInstance().getTask(TYPE).enqueue(new Callback<ResponseBody>() {
+        MdmpClient.getInstance().getTasks(TYPE).enqueue(new Callback<List<TaskDefined>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ResponseBody body = response.body();
-                if (body == null) {
-                    body = response.errorBody();
-                }
-                if (body != null) {
+            public void onResponse(Call<List<TaskDefined>> call, Response<List<TaskDefined>> response) {
+                List<TaskDefined> taskDefineds = response.body();
+                if (taskDefineds != null) {
+                    mData.clear();
+                    mData.addAll(taskDefineds);
+                    adapter.updateData(mData);
+                } else {
+                    ResponseBody body = response.errorBody();
                     try {
-                        String content = body.string();
-                        Gson gson = GsonHalper.build();
-                        mData = gson.fromJson(content, new TypeToken<List<TaskDefined>>() {
-                        }.getType());
-                        swipeRefreshLayout.setRefreshing(false);
-                        adapter.updateData(mData);
+                        if (body != null) {
+                            RunOnUiThreadUtil.showToast(getActivity(), body.string());
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<List<TaskDefined>> call, Throwable t) {
                 RunOnUiThreadUtil.showNetworkToast(mContext);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -120,17 +120,12 @@ public class TaskChildren2Fragment extends BaseFragment implements SwipeRefreshL
 
 
     @Override
-    public void onClickMore(TaskInterface task,View view) {
-        PopupMenu popupMenu = new PopupMenu(mContext, view);
-        popupMenu.getMenuInflater()
-                .inflate(R.menu.menu_comment, popupMenu.getMenu());
-        popupMenu.setGravity(Gravity.START);
-        popupMenu.show();
+    public void onClickMore(TaskInterface task, View view) {
     }
 
     @Override
     public void onClickDetails(TaskInterface task) {
-        DetailedActivity.actionStart(mContext);
+        DetailedActivity.actionStart(mContext, task.getId());
     }
 }
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/menubackground"
+    android:background="@color/menuBackground"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -14,8 +14,8 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="?android:attr/colorPrimary"
             android:navigationIcon="@drawable/ic_left_back"
             app:navigationIcon="@drawable/ic_left_back"
             app:popupTheme="@style/AppTheme.PopupOverlay"
@@ -26,13 +26,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="40dp">
+        android:paddingTop="@dimen/default_margin">
+
+        <RelativeLayout
+            android:id="@+id/setting_about"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/icon_size"
+            android:background="@drawable/selector_card_color"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于程序"
+                android:layout_centerVertical="true"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/headings" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/um_logout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/icon_size"
             android:background="@drawable/selector_card_color"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin">
 
@@ -40,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="退出登录"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/headings" />
         </RelativeLayout>

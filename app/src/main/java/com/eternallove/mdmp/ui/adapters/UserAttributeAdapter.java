@@ -53,9 +53,9 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
         UserAttribute userAttribute = mData.get(position);
-        holder.tvHeadings.setText(userAttribute.getHeadings());
-        holder.tvSecondary.setText(userAttribute.getSecondary());
-        holder.tvOther.setText(userAttribute.getOther());
+        initData(holder.tvHeadings, userAttribute.getHeadings());
+        initData(holder.tvSecondary, userAttribute.getSecondary());
+        initData(holder.tvOther, userAttribute.getOther());
         holder.cardView.setOnClickListener(view -> mListener.onClickDetails(userAttribute));
         holder.imgMore.setOnClickListener(view -> mListener.onClickMore(userAttribute));
     }
@@ -77,4 +77,14 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
             ButterKnife.bind(this, itemView);
         }
     }
+
+    private void initData(TextView textView, String content) {
+        if (content == null) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(content);
+        }
+    }
+
 }

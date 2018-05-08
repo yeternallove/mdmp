@@ -7,7 +7,7 @@ import java.util.Date;
  * @author: eternallove
  * @date: 2018/3/22 13:58
  */
-public class UserBean {
+public class UserBean implements Cloneable{
     //角色启用
     public static final int ENABLE = 1;
     //角色禁用
@@ -35,13 +35,17 @@ public class UserBean {
     private Integer status;
 
     public UserBean() {
+
     }
 
-    public UserBean(String account, String phone, String username, Integer enable) {
-        this.account = account;
-        this.phone = phone;
-        this.username = username;
-        this.enable = enable;
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Integer getId() {

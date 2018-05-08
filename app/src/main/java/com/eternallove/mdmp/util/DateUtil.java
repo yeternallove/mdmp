@@ -1,5 +1,6 @@
 package com.eternallove.mdmp.util;
 
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +48,9 @@ public class DateUtil {
      * 是用ThreadLocal<SimpleDateFormat>来获取SimpleDateFormat,这样每个线程只会有一个SimpleDateFormat @param date @param pattern @return
      */
     public static String format(Date date, String pattern) {
+        if (date ==null){
+            return "";
+        }
         return getSdf(pattern).format(date);
     }
 

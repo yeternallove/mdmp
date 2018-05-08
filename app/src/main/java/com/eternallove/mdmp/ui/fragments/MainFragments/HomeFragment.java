@@ -2,18 +2,16 @@ package com.eternallove.mdmp.ui.fragments.MainFragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.ui.base.BaseFragment;
+import com.eternallove.mdmp.ui.dialog.MessageDialog;
 import com.youth.banner.Banner;
 
 import butterknife.BindView;
@@ -85,11 +83,10 @@ public class HomeFragment extends BaseFragment {
             }
         });
         //设置点击事件，下标是从1开始
-        banner.setOnBannerClickListener(new Banner.OnBannerClickListener() {//设置点击事件
-            @Override
-            public void OnBannerClick(View view, int position) {
-                Toast.makeText(getActivity(), "你点击了：" + titles[position-1], Toast.LENGTH_SHORT).show();
-            }
+        //设置点击事件
+        banner.setOnBannerClickListener((view, position) -> {
+            new MessageDialog(getActivity()).show();
+            Toast.makeText(getActivity(), "你点击了：" + titles[position-1], Toast.LENGTH_SHORT).show();
         });
     }
     //如果你需要考虑更好的体验，可以这么操作

@@ -1,30 +1,35 @@
 package com.eternallove.mdmp.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
 import com.eternallove.mdmp.ui.base.BaseActivity;
-import com.eternallove.mdmp.ui.fragments.MainFragments.MeFragment;
+import com.eternallove.mdmp.ui.dialog.PendingDialog;
 import com.eternallove.mdmp.util.AppManager;
-import com.eternallove.mdmp.util.RegexUtil;
-import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.eternallove.mdmp.util.Constant.RS_CANCEL;
+import static com.eternallove.mdmp.util.Constant.RS_EXIT;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
     private AppManager appManager;
+    private PendingDialog dialog;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.setting_about)
+    View settingAbout;
     @BindView(R.id.um_logout)
     View umLogout;
 
@@ -41,14 +46,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
         toolbar.setNavigationOnClickListener(view -> {
-            setResult(MainActivity.RS_CANCEL);
+            setResult(RS_CANCEL);
             finish();
         });
         appManager = AppManager.getInstance(this);
+        dialog = new PendingDialog(this,"退出登录...");
         initView();
     }
 
     private void initView() {
+        settingAbout.setOnClickListener(this);
         umLogout.setOnClickListener(this);
     }
 
@@ -56,15 +63,38 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.setting_about:
+                AboutActivity.actionStart(this);
+                break;
             case R.id.um_logout:
-                appManager.logout();
-                LoginActivity.actionStart(this);
-                setResult(MainActivity.RS_EXIT);
-                finish();
+                dialog.show();
+                logout();
                 break;
             default:
                 break;
         }
     }
 
+    private void logout() {
+        MdmpClient.getInstance().logout().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                appManager.logout();
+                LoginActivity.actionStart(SettingActivity.this);
+                setResult(RS_EXIT);
+                finish();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dialog.dismiss();
+    }
 }

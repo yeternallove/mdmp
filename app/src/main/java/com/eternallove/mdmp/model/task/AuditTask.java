@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class AuditTask implements Serializable {
 
-	private static final long serialVersionUID = 5282747335717126889L;
+	private final static long serialVersionUID = 5282747335717126889L;
 	//开始时间
 	private Date startTime;
 	//环节名称

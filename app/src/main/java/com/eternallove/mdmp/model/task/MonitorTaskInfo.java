@@ -5,85 +5,98 @@ import java.util.List;
 
 public class MonitorTaskInfo {
 
-	//实体名称
-	private String mdConcepet;
-	//操作类型
-	private String operateType;
-	//操作人
-	private String processor;
-	//操作时间
-	private Date operateTime;
-	//旧值
-	private String beforeValue;
-	//新值
-	private String afterValue;
-	//流程日志
-	private List<AuditTask> logList;
-	//流程模板
-	private String templet;
-	
-	public String getMdConcepet() {
-		return mdConcepet;
-	}
+    //实体名称
+    private String mdConcepet;
+    //操作类型
+    private String operateType;
+    //操作人
+    private String processor;
+    //操作时间
+    private Date operateTime;
+    //旧值
+    private String beforeValue;
+    //新值
+    private String afterValue;
+    //流程日志
+    private List<AuditTask> logList;
+    //流程模板
+    private String templet;
 
-	public void setMdConcepet(String mdView) {
-		this.mdConcepet = mdView;
-	}
+    public String getMdConcepet() {
+        return mdConcepet;
+    }
 
-	public String getOperateType() {
-		return operateType;
-	}
+    public void setMdConcepet(String mdView) {
+        this.mdConcepet = mdView;
+    }
 
-	public void setOperateType(String operateType) {
-		this.operateType = operateType;
-	}
+    public String getOperateType() {
+        if(operateType!=null) {
+            switch (operateType) {
+                case "U":
+                    return "修改";
+                case "I":
+                    return "插入";
+                case "D":
+                    return "删除";
+                default:
+                    return operateType;
+            }
+        }
+        return null;
+    }
 
-	public String getProcessor() {
-		return processor;
-	}
+    public void setOperateType(String operateType) {
+        this.operateType = operateType;
+    }
 
-	public void setProcessor(String processor) {
-		this.processor = processor;
-	}
+    public String getProcessor() {
+        return processor;
+    }
 
-	public Date getOperateTime() {
-		return operateTime;
-	}
+    public void setProcessor(String processor) {
+        this.processor = processor;
+    }
 
-	public void setOperateTime(Date operateTime) {
-		this.operateTime = operateTime;
-	}
+    public Date getOperateTime() {
+        return operateTime;
+    }
 
-	public String getBeforeValue() {
-		return beforeValue;
-	}
+    public void setOperateTime(Date operateTime) {
+        this.operateTime = operateTime;
+    }
 
-	public void setBeforeValue(String beforeValue) {
-		this.beforeValue = beforeValue;
-	}
+    public String getBeforeValue() {
+        return beforeValue;
+    }
 
-	public String getAfterValue() {
-		return afterValue;
-	}
+    public void setBeforeValue(String beforeValue) {
+        this.beforeValue = beforeValue;
+    }
 
-	public void setAfterValue(String afterValue) {
-		this.afterValue = afterValue;
-	}
+    public String getAfterValue() {
+        return afterValue;
+    }
 
-	public List<AuditTask> getLogList() {
-		return logList;
-	}
+    public void setAfterValue(String afterValue) {
+        this.afterValue = afterValue;
+    }
 
-	public void setLogList(List<AuditTask> logList) {
-		this.logList = logList;
-	}
+    public List<AuditTask> getLogList() {
+        return logList;
+    }
 
-	public String getTemplet() {
-		return templet;
-	}
+    public void setLogList(List<AuditTask> logList) {
+        this.logList = logList;
+    }
 
-	public void setTemplet(String templet) {
-		this.templet = templet;
-	}
+    public String getTemplet() {
+        return templet;
+    }
+
+    public void setTemplet(String templet) {
+        this.templet = templet;
+    }
+
 
 }

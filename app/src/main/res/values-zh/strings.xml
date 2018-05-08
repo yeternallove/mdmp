@@ -22,14 +22,23 @@
     <string name="change_pwd_title">修改密码</string>
     <!--other-->
     <string name="save">保存</string>
+    <string name="save_update">确认修改</string>
+    <string name="pass">通过</string>
+    <string name="no_pass">不通过</string>
     <string name="edit_activity_title">更改</string>
     <string name="detailed_activity_title">详情</string>
     <string name="settings_activity_title">设置</string>
+    <string name="detailed_about_title">关于</string>
     <string name="me_activity_title">个人中心</string>
     <string name="bottom_Nav_item_1">微信</string>
     <string name="bottom_Nav_item_2">首页</string>
     <string name="bottom_Nav_item_3">任务</string>
     <string name="bottom_Nav_item_4">我</string>
     <string name="network">网络连接异常</string>
+    <!--item use-->
+    <string name="item_account">账号</string>
+    <string name="item_user_name">用户姓名</string>
+    <string name="item_department">所属部门</string>
+    <string name="item_role">角色</string>
 
 </resources>
