@@ -14,8 +14,10 @@ import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.util.AppManager;
 import com.eternallove.mdmp.util.MD5;
+import com.eternallove.mdmp.util.ResponseUtil;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,6 +83,10 @@ public class ChangePwdActivity extends BaseActivity implements View.OnClickListe
         String twoPwd = edtPwdTwo.getText().toString().trim();
         if (!newPwd.equals(twoPwd)) {
             RunOnUiThreadUtil.showToast(this, "两次密码输入不正确");
+            return;
+        } else if (newPwd.equals(oldPwd)) {
+            RunOnUiThreadUtil.showToast(this, "新密码应与原密码不同");
+            return;
         }
         UserView user = new UserView();
         user.setOldpassword(MD5.getMD5Str(oldPwd));
@@ -90,21 +96,11 @@ public class ChangePwdActivity extends BaseActivity implements View.OnClickListe
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ResponseBody body = response.body();
-                        if (body == null) {
-                            body = response.errorBody();
-                        }
-                        if (body != null) {
-                            try {
-                                JSONObject json = new JSONObject(body.string());
-                                if (json.has("errMsg")) {
-                                    RunOnUiThreadUtil.showToast(ChangePwdActivity.this, json.getString("errMsg"));
-                                }else{
-                                    RunOnUiThreadUtil.showToast(ChangePwdActivity.this, "修改密码成功！");
-                                }
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
-                            }
+                        String content = ResponseUtil.getVoidContent(response.body(), response.errorBody());
+                        if ("".equals(content)) {
+                            RunOnUiThreadUtil.showToast(ChangePwdActivity.this, "修改密码成功！");
+                        } else {
+                            RunOnUiThreadUtil.showToast(ChangePwdActivity.this, content);
                         }
                     }
 

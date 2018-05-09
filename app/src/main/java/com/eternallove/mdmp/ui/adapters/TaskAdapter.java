@@ -86,7 +86,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.UserViewHolder
             holder.imgMore.setVisibility(View.VISIBLE);
             holder.imgMore.setOnClickListener(view -> mListener.onClickMore(task, view));
         } else {
-            holder.imgMore.setVisibility(View.GONE);
+            holder.imgMore.setVisibility(View.INVISIBLE);
         }
         holder.itemTask.setOnClickListener(view -> mListener.onClickDetails(task));
 

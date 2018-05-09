@@ -12,6 +12,7 @@ import com.eternallove.mdmp.api.MdmpClient;
 import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.util.AppManager;
+import com.eternallove.mdmp.util.ResponseUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -164,27 +165,12 @@ public class MeSettingActivity extends BaseActivity implements View.OnClickListe
         MdmpClient.getInstance().updateUser(user.getId(), user).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String content, errorContent;
-                try {
-                    ResponseBody body = response.errorBody();
-                    ResponseBody errorBody = response.errorBody();
-                    if (body != null) {
-                        content = body.string();
-                        JSONObject json = new JSONObject(content);
-                        if (json.has("errMsg")) {
-                            activity.saveFailure(json.getString("errMsg"));
-                        }
-                    } else if (errorBody != null) {
-                        errorContent = errorBody.string();
-                        if (errorContent != null && "".equals(errorContent)) {
-                            activity.saveFailure(errorContent);
-                        }
-                    } else {
-                        activity.saveSuccess();
-                        mUser = user;
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                String conntent = ResponseUtil.getVoidContent(response.body(), response.errorBody());
+                if ("".equals(conntent)) {
+                    activity.saveSuccess();
+                    mUser = user;
+                } else {
+                    activity.saveFailure(conntent);
                 }
             }
 

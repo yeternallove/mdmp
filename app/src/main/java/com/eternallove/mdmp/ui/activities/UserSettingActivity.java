@@ -22,6 +22,7 @@ import com.eternallove.mdmp.model.user.role.RoleView;
 import com.eternallove.mdmp.model.user.viewRight.ViewRightView;
 import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.util.AppManager;
+import com.eternallove.mdmp.util.ResponseUtil;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 import com.google.gson.JsonObject;
 
@@ -214,8 +215,8 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
                 if (roleViews != null && roleViews.size() != 0) {
                     appManager.setRoles(roleViews);
                     UserSettingActivity.this.onDepartment();
-                }else {
-                    RunOnUiThreadUtil.showToast(UserSettingActivity.this,"角色加载失败");
+                } else {
+                    RunOnUiThreadUtil.showToast(UserSettingActivity.this, "角色加载失败");
                 }
             }
 
@@ -235,8 +236,8 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
                 if (departmentViews != null && departmentViews.size() != 0) {
                     appManager.setDepartments(departmentViews);
                     UserSettingActivity.this.onDepartment();
-                }else {
-                    RunOnUiThreadUtil.showToast(UserSettingActivity.this,"部门加载失败");
+                } else {
+                    RunOnUiThreadUtil.showToast(UserSettingActivity.this, "部门加载失败");
                 }
             }
 
@@ -268,7 +269,7 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
         List<Role> list = appManager.getRoles();
         if (list == null || list.size() == 0) {
             getRole();
-        }else{
+        } else {
             String[] items = new String[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 items[i] = list.get(i).getName();
@@ -285,27 +286,12 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
         MdmpClient.getInstance().updateUser(user.getId(), user).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String content, errorContent;
-                try {
-                    ResponseBody body = response.errorBody();
-                    ResponseBody errorBody = response.errorBody();
-                    if (body != null) {
-                        content = body.string();
-                        JSONObject json = new JSONObject(content);
-                        if (json.has("errMsg")) {
-                            RunOnUiThreadUtil.showToast(UserSettingActivity.this, json.getString("errMsg"));
-                        }
-                    } else if (errorBody != null) {
-                        errorContent = errorBody.string();
-                        if (errorContent != null && "".equals(errorContent)) {
-                            RunOnUiThreadUtil.showToast(UserSettingActivity.this, errorContent);
-                        }
-                    } else {
-                        setResult(RS_UPDATE);
-                        RunOnUiThreadUtil.showToast(UserSettingActivity.this, "修改成功");
-                    }
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                String conntent = ResponseUtil.getVoidContent(response.body(), response.errorBody());
+                if ("".equals(conntent)) {
+                    setResult(RS_UPDATE);
+                    RunOnUiThreadUtil.showToast(UserSettingActivity.this, "修改成功");
+                } else {
+                    RunOnUiThreadUtil.showToast(UserSettingActivity.this, conntent);
                 }
             }
 

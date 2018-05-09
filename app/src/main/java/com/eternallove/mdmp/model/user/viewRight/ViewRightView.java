@@ -120,21 +120,28 @@ public class ViewRightView implements UserAttribute {
 
     @Override
     public String getHeadings() {
-        return getView();
+        return getName();
     }
 
     @Override
     public String getSecondary() {
-//		StringBuilder sb = new StringBuilder();
-//		for (Role mRole:getRole()){
-//			sb.append(mRole.getName())
-//		}
-//		return sb.toString();
-        return getName();
+        StringBuilder roles = new StringBuilder("");
+        if (role != null && role.size() > 0) {
+            roles.append(role.get(0).getName());
+            for (int i = 1; i < role.size(); i++) {
+                roles.append(",").append(role.get(i).getName());
+            }
+        }
+        return roles.toString();
     }
 
     @Override
     public String getOther() {
         return null;
+    }
+
+    @Override
+    public boolean isShowMore() {
+        return false;
     }
 }

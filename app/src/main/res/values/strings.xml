@@ -13,7 +13,8 @@
     <string name="user_mgmt_role">Role</string>
     <string name="user_mgmt_view">View permissions</string>
     <string name="user_mgmt_dept">Department</string>
-    <string name="action_like">Like</string>
+    <string name="action_delete">Like</string>
+    <string name="action_reset">Reset password</string>
     <string name="action_comment">Comment</string>
     <!--server activity-->
     <string name="server_server">IP</string>

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.eternallove.mdmp.R;
 import com.eternallove.mdmp.api.MdmpClient;
+import com.eternallove.mdmp.model.interfaces.UserAttribute;
 import com.eternallove.mdmp.model.user.UserBean;
 import com.eternallove.mdmp.model.user.UserView;
 import com.eternallove.mdmp.ui.activities.UserSettingActivity;
@@ -70,7 +71,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
         //mRecyclerView
         mData = new ArrayList<>();
-        //TODO 测试数据
+        // 测试数据
 
         adapter = new UserAdapter(getActivity(), mData);
         mRecyclerView.setAdapter(adapter);
@@ -127,6 +128,5 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             }
         });
     }
-
 
 }

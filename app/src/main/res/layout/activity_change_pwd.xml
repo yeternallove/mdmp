@@ -35,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_margin"
-            android:hint="@string/login_hint_password"
+            android:hint="原密码"
+            android:inputType="textPassword"
             android:textSize="20sp" />
 
         <EditText
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_margin"
             android:layout_marginTop="@dimen/text_margin"
-            android:hint="@string/login_hint_password"
+            android:hint="新密码"
             android:inputType="textPassword"
             android:textSize="20sp" />
 
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/text_margin"
             android:layout_marginTop="@dimen/text_margin"
-            android:hint="@string/login_hint_password"
+            android:hint="确认密码"
             android:inputType="textPassword"
             android:textSize="20sp" />
         <Button

@@ -2,7 +2,12 @@ package com.eternallove.mdmp.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.eternallove.mdmp.R;
@@ -20,7 +25,9 @@ public class RunOnUiThreadUtil {
         if (APP_NAME == null) {
             APP_NAME = context.getString(R.string.app_name);
         }
-        Toast.makeText(context, APP_NAME + ":" + content, Toast.LENGTH_SHORT).show();
+        if (content != null) {
+            Toast.makeText(context, APP_NAME + ":" + content, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void showNetworkToast(Context context) {
@@ -40,4 +47,15 @@ public class RunOnUiThreadUtil {
         builder.setItems(items, listener);
         builder.create().show();
     }
+
+    public static void showPopupMenu(@NonNull Context context, @NonNull View anchor, PopupMenu.OnMenuItemClickListener listener) {
+        PopupMenu popupMenu = new PopupMenu(context, anchor);
+        popupMenu.getMenuInflater()
+                .inflate(R.menu.menu_comment, popupMenu.getMenu());
+        popupMenu.setGravity(Gravity.START);
+        popupMenu.setOnMenuItemClickListener(listener);
+        popupMenu.show();
+    }
+
+
 }

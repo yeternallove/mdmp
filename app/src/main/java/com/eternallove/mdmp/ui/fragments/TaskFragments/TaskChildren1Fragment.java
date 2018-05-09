@@ -21,6 +21,7 @@ import com.eternallove.mdmp.ui.adapters.TaskAdapter;
 import com.eternallove.mdmp.ui.base.BaseFragment;
 import com.eternallove.mdmp.ui.dialog.MessageDialog;
 import com.eternallove.mdmp.ui.dialog.PendingDialog;
+import com.eternallove.mdmp.util.ResponseUtil;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshL
         mdmpClient = MdmpClient.getInstance();
         //mRecyclerView
         mData = new ArrayList<>();
-        //TODO 测试数据
+        // 测试数据
         TaskDefined taskDefined = new TaskDefined();
         taskDefined.setBeforeTime(new Date());
         mData.add(taskDefined);
@@ -148,9 +149,12 @@ public class TaskChildren1Fragment extends BaseFragment implements SwipeRefreshL
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 //TODO 随便一写 判断是否提取成功
-                if (response.errorBody() == null) {
+                String content = ResponseUtil.getVoidContent(response.body(), response.errorBody());
+                if ("".equals(content)) {
                     RunOnUiThreadUtil.showToast(mContext, "提取成功");
                     updateData();
+                } else {
+                    RunOnUiThreadUtil.showToast(mContext, content);
                 }
                 pendingDialog.dismiss();
             }

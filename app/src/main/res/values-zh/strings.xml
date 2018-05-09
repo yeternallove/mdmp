@@ -13,7 +13,8 @@
     <string name="user_mgmt_role">权限列表</string>
     <string name="user_mgmt_view">视图权限</string>
     <string name="user_mgmt_dept">部门列表</string>
-    <string name="action_like">赞</string>
+    <string name="action_delete">删除</string>
+    <string name="action_reset">重置密码</string>
     <string name="action_comment">评论</string>
     <!--server activity-->
     <string name="server_server">服务器地址</string>
@@ -40,5 +41,8 @@
     <string name="item_user_name">用户姓名</string>
     <string name="item_department">所属部门</string>
     <string name="item_role">角色</string>
+
+    <string name="error_invalid_password">密码不能为空</string>
+    <string name="error_field_required">账号不能为空</string>
 
 </resources>

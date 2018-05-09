@@ -18,6 +18,7 @@ import com.eternallove.mdmp.model.parameter.TaskAudit;
 import com.eternallove.mdmp.ui.base.BaseActivity;
 import com.eternallove.mdmp.ui.dialog.MessageDialog;
 import com.eternallove.mdmp.util.DateUtil;
+import com.eternallove.mdmp.util.ResponseUtil;
 import com.eternallove.mdmp.util.RunOnUiThreadUtil;
 
 import org.json.JSONArray;
@@ -69,9 +70,9 @@ public class DetailedActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.task_tv_3)
     TextView tvHead3;
     @BindView(R.id.btn_pass)
-    Button btnPass;
+    View btnPass;
     @BindView(R.id.btn_no_pass)
-    Button btnNoPass;
+    View btnNoPass;
     @BindView(R.id.handle_btn)
     View handleBtn;
 
@@ -312,7 +313,8 @@ public class DetailedActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 //TODO 随便一写 判断是否处理成功
-                if (response.errorBody() == null) {
+                String content = ResponseUtil.getVoidContent(response.body(), response.errorBody());
+                if ("".equals(content)) {
                     RunOnUiThreadUtil.showToast(DetailedActivity.this, "提交成功");
                     handleBtn.setVisibility(View.GONE);
                     setResult(RS_UPDATE);

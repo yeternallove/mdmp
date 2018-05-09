@@ -31,7 +31,7 @@ public class MessageDialog extends Dialog {
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
 
     public MessageDialog(Context context) {
-        super(context, R.style.MyDialog);
+        super(context, R.style.MessageDialog);
     }
 
     public MessageDialog(Context context, String title, String commentHint) {

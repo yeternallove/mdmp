@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity {
     public final static String[] TAG_FRAGMENT = new String[]{"CHAT", "ACC", "SCH", "ME"};//标签
     private long mPressedTime = 0;
 
-    private List<BaseFragment> fragments = new ArrayList<>();
+    private List<BaseFragment> fragments;
     private BaseFragment fragmentNow;
     private FragmentManager fm;
 
@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity {
         fm = getSupportFragmentManager();
 //        setOverflowShowingAlways();
 //        LoginActivity.actionStart(this);
+        fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
         fragments.add(new TaskFragment());
         fragments.add(new MeFragment());
@@ -185,7 +186,6 @@ public class MainActivity extends BaseActivity {
         }else{
             fragmentNow.onActivityResult(requestCode,resultCode,data);
         }
-
     }
 
     @Override

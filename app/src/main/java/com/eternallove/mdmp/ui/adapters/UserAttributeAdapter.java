@@ -57,7 +57,12 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
         initData(holder.tvSecondary, userAttribute.getSecondary());
         initData(holder.tvOther, userAttribute.getOther());
         holder.cardView.setOnClickListener(view -> mListener.onClickDetails(userAttribute));
-        holder.imgMore.setOnClickListener(view -> mListener.onClickMore(userAttribute));
+        if(userAttribute.isShowMore()){
+            holder.imgMore.setVisibility(View.VISIBLE);
+            holder.imgMore.setOnClickListener(view -> mListener.onClickMore(userAttribute));
+        }else {
+            holder.imgMore.setVisibility(View.GONE);
+        }
     }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
@@ -79,7 +84,7 @@ public class UserAttributeAdapter extends RecyclerView.Adapter<UserAttributeAdap
     }
 
     private void initData(TextView textView, String content) {
-        if (content == null) {
+        if ("".equals(content)) {
             textView.setVisibility(View.GONE);
         } else {
             textView.setVisibility(View.VISIBLE);

@@ -52,40 +52,57 @@ public interface MdmpServer {
     @POST("user/{userId}?update")
     Call<ResponseBody> updateUser(@Path("userId") Integer userId, @Body UserView userView);
 
+    @POST("user/{userId}?delete")
+    Call<ResponseBody> deleteUser(@Path("userId") Integer userId);
+
     /**
      * User Attribute
      */
     @GET("role")
     Call<List<RoleView>> getRole();
 
+    @POST("role/{roleId}?delete")
+    Call<ResponseBody> deleteRole(@Path("roleId") Integer roleId);
+
     @GET("department")
     Call<List<DepartmentView>> getDepartment();
 
+    @POST("department/{departmentId}?delete")
+    Call<ResponseBody> deleteDepartment(@Path("departmentId") Integer departmentId);
+
     @GET("viewright")
-    Call<List<ViewRightView>> getViewRight();
+    Call<List<ViewRightView>> getViewRight(
+            @Query("cluster") String cluster,
+            @Query("model") String model,
+            @Query("currentPage") int currentPage,
+            @Query("pageSize") int pageSize);
 
     /**
      * Task
      */
     @GET("task")
-    Call<List<TaskDefined>> getTasks(@Query("type") String type,
-                                     @Query("currentPage") int currentPage,
-                                     @Query("pageSize") int pageSize
-    );
+    Call<List<TaskDefined>> getTasks(
+            @Query("type") String type,
+            @Query("currentPage") int currentPage,
+            @Query("pageSize") int pageSize);
 
     @GET("task?size")
-    Call<ResponseBody> getTaskSize(@Query("type") String type,
-                                @Query("currentPage") int currentPage,
-                                @Query("pageSize") int pageSize
-    );
+    Call<ResponseBody> getTaskSize(
+            @Query("type") String type,
+            @Query("currentPage") int currentPage,
+            @Query("pageSize") int pageSize);
+
     @GET("task/mySubmit")
-    Call<ResponseBody> getMySubmit(@Query("currentPage") int currentPage,
-                                   @Query("pageSize") int pageSize,
-                                   @Query("processStatus") int processStatus);
+    Call<ResponseBody> getMySubmit(
+            @Query("currentPage") int currentPage,
+            @Query("pageSize") int pageSize,
+            @Query("processStatus") int processStatus);
+
     @GET("task/mySubmit?size")
-    Call<ResponseBody> getMyTaskSize(@Query("currentPage") int currentPage,
-                                   @Query("pageSize") int pageSize,
-                                   @Query("processStatus") int processStatus);
+    Call<ResponseBody> getMyTaskSize(
+            @Query("currentPage") int currentPage,
+            @Query("pageSize") int pageSize,
+            @Query("processStatus") int processStatus);
 
     @GET("task/{id}")
     Call<MonitorTaskInfo> getTask(@Path("id") String userId);
@@ -101,6 +118,5 @@ public interface MdmpServer {
      */
     @POST("task/{id}?audit")
     Call<ResponseBody> handleTask(@Path("id") String taskId, @Body TaskAudit taskAudit);
-
 
 }

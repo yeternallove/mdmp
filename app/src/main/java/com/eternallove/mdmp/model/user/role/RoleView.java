@@ -74,4 +74,9 @@ public class RoleView extends Role implements UserAttribute {
     public String getOther() {
         return null;
     }
+
+    @Override
+    public boolean isShowMore() {
+        return true;
+    }
 }

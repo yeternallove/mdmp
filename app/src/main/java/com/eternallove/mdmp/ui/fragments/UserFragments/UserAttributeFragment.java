@@ -98,7 +98,7 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setHasFixedSize(true);
-        updateData(mTag);
+        updateData();
         return view;
     }
 
@@ -110,7 +110,7 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        updateData(mTag);
+        updateData();
     }
 
     public interface OnListFragmentInteractionListener {
@@ -119,8 +119,8 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
         void onClickDetails(UserAttribute userAttribute);
     }
 
-    private void updateData(int tag) {
-        switch (tag) {
+    private void updateData() {
+        switch (mTag) {
             case UserActivity.USER_ATTRIBUTE_1:
                 getRole();
                 break;
@@ -132,7 +132,6 @@ public class UserAttributeFragment extends BaseFragment implements SwipeRefreshL
                 break;
             default:
                 break;
-
         }
     }
 

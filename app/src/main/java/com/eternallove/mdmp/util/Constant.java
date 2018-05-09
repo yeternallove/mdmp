@@ -1,7 +1,7 @@
 package com.eternallove.mdmp.util;
 
 /**
- * @description:
+ * @description: resultCode
  * @author: eternallove
  * @date: 2018/5/6 0:15
  */

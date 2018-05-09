@@ -34,4 +34,9 @@ public class DepartmentView extends Department implements UserAttribute {
     public String getOther() {
         return null;
     }
+
+    @Override
+    public boolean isShowMore() {
+        return true;
+    }
 }

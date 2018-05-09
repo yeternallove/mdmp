@@ -201,21 +201,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/btn_no_pass"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="@string/no_pass" />
-
-        <Button
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+        <LinearLayout
             android:id="@+id/btn_pass"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/icon_size"
             android:layout_weight="1"
-            android:text="@string/pass" />
+            android:background="@drawable/selector_card_color"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_btn_pass" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pass"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_no_pass"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/icon_size"
+            android:layout_weight="1"
+            android:background="@drawable/selector_card_color"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_btn_no_pass" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_pass"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 </RelativeLayout>

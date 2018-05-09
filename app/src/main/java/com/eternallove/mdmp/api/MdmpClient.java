@@ -140,6 +140,10 @@ public class MdmpClient {
         return mService.updateUser(userId, userView);
     }
 
+    public Call<ResponseBody> deleteUser(Integer userId) {
+        return mService.deleteUser(userId);
+    }
+
     public Call<ResponseBody> getMySubmit() {
         return mService.getMySubmit(1, 100, -1);
     }
@@ -164,21 +168,28 @@ public class MdmpClient {
         return mService.getRole();
     }
 
+    public Call<ResponseBody> deleteRole(Integer roleId) {
+        return mService.deleteRole(roleId);
+    }
+
     public Call<List<DepartmentView>> getDepartment() {
         return mService.getDepartment();
     }
 
+    public Call<ResponseBody> deleteDepartment(Integer departmentId) {
+        return mService.deleteDepartment(departmentId);
+    }
+
     public Call<List<ViewRightView>> getViewRight() {
-        return mService.getViewRight();
+        return mService.getViewRight("eternal", "eternal", 1, 100);
     }
 
     public Call<ResponseBody> getTaskSize(String type) {
         return mService.getTaskSize(type, 1, 100);
     }
 
-    public Call<ResponseBody> getMyTaskSize(int currentPage, int pageSize) {
+    public Call<ResponseBody> getMyTaskSize() {
         return mService.getMyTaskSize(1, 100, -1);
     }
-
 
 }

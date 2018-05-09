@@ -9,4 +9,5 @@ public interface UserAttribute {
     String getHeadings();
     String getSecondary();
     String getOther();
+    boolean isShowMore();
 }

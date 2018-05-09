@@ -72,9 +72,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_btn_login:
-                btnLogin.setEnabled(false);
-//                MainActivity.actionStart(this);
-//                finish();
                 attemptLogin();
                 break;
             case R.id.main_btn_server:
@@ -95,7 +92,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         String account = edtAccount.getText().toString();
         String password = edtPassword.getText().toString();
-
+        //TODO 测试使用
+        if (account.equals("1")) {
+            MainActivity.actionStart(this);
+            finish();
+            return;
+        }
         boolean cancel = false;
         View focusView = null;
 
@@ -120,11 +122,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            //TODO 测试使用
-            if (account.equals("1")) {
-                MainActivity.actionStart(this);
-                finish();
-            }
+            btnLogin.setEnabled(false);
             UserLogin(account, password);
         }
     }
@@ -132,15 +130,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private boolean isAccountValid(String account) {
         //TODO: Replace this with your own logic
 //        return email.contains("@");
-//        return account.length() > 0;
-        return true;
+        return account.length() > 0;
+//        return true;
 
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-//        return password.length() > 0;
-        return true;
+        return password.length() > 0;
+//        return true;
     }
 
     private void UserLogin(String account, String password) {

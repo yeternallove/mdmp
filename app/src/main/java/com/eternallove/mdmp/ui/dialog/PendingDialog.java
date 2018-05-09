@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import com.eternallove.mdmp.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * @description:
  * @author: eternallove
@@ -21,7 +18,7 @@ public class PendingDialog extends Dialog {
     private String messageStr;
 
     private PendingDialog(Context context) {
-        super(context, R.style.MyDialog);
+        super(context, R.style.PendingDialog);
     }
 
     public PendingDialog(Context context, String message ) {

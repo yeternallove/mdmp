@@ -70,7 +70,7 @@ public class TaskChildren3Fragment extends BaseFragment implements SwipeRefreshL
         swipeRefreshLayout.setOnRefreshListener(this);
         //mRecyclerView
         mData = new ArrayList<>();
-        //TODO 测试数据
+        // 测试数据
 
         adapter = new TaskAdapter(getActivity(), mData, null, this);
         mRecyclerView.setAdapter(adapter);
